@@ -1,0 +1,15 @@
+*.suo
+*.swp
+*.user
+*.testsettings
+.DS_Store
+**/bin
+**/obj
+**/TestResults
+**/packages
+**/.vs
+**/.svn
+
+**/node_modules
+**/maps
+*.css.map
