@@ -7,8 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace LL.FirstCore.Controllers
 {
+    [ApiVersion("2")]
     [ApiController]
-    [Route("[controller]")]
+    [Route("v{version:apiVersion}/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
         private static readonly string[] Summaries = new[]

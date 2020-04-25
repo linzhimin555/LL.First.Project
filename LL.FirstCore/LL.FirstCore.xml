@@ -4,5 +4,33 @@
         <name>LL.FirstCore</name>
     </assembly>
     <members>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Get">
+            <summary>
+            v1版本
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Post">
+            <summary>
+            v2版本
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v2.ValuesController.Get">
+            <summary>
+            v2版本
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="F:LL.FirstCore.Startup.provider">
+            <summary>
+            Api版本信息
+            </summary>
+        </member>
+        <member name="T:LL.FirstCore.SwaggerFilter.SetVersionInPathDocumentFilter">
+            <summary>
+            设置版本信息
+            </summary>
+        </member>
     </members>
 </doc>
