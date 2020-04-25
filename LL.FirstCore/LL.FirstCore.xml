@@ -22,6 +22,31 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:LL.FirstCore.Controllers.WeatherForecastController.Get">
+             <summary>
+             获取天气数据信息
+             </summary>
+             <remarks>
+             Sample request:
+            
+                 POST /Todo
+                 {
+                    "id": 1,
+                    "name": "Item1",
+                    "isComplete": true
+                 }
+            
+             </remarks>
+             <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.WeatherForecastController.Post(LL.FirstCore.WeatherForecast)">
+            <summary>
+            提交实体数据信息
+            </summary>
+            <returns></returns>
+            <response code="201">Returns the newly created item</response>
+            <response code="400">If the item is null</response>       
+        </member>
         <member name="F:LL.FirstCore.Startup.provider">
             <summary>
             Api版本信息

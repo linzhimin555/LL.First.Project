@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using LL.FirstCore.SwaggerFilter;
 using Microsoft.AspNetCore.Builder;
@@ -86,9 +87,11 @@ namespace LL.FirstCore
                 option.OperationFilter<RemoveVersionParameterOperationFilter>();
                 option.DocumentFilter<SetVersionInPathDocumentFilter>();
 
+                //以下两种写法等效
                 var temPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).Assembly.GetName().Name}.xml");
+                //var temPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");                
                 option.IncludeXmlComments(temPath, true);
-                //就是这里
+                //加入控制器注释描述信息
                 var basePath = AppContext.BaseDirectory;
                 var xmlPath = Path.Combine(basePath, "LL.FirstCore.xml");//这个就是刚刚配置的xml文件名
                 option.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
