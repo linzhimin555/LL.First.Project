@@ -56,7 +56,7 @@ namespace LL.FirstCore
             #endregion
 
             #region using Swagger
-            provider = services.BuildServiceProvider().GetRequiredService<IApiVersionDescriptionProvider>();
+            provider = BuildServiceProvider(services).GetRequiredService<IApiVersionDescriptionProvider>();
             services.AddSwaggerGen(option =>
             {
                 foreach (var descriptiopn in provider.ApiVersionDescriptions)
@@ -127,6 +127,11 @@ namespace LL.FirstCore
             {
                 endpoints.MapControllers();
             });
+        }
+
+        private ServiceProvider BuildServiceProvider(IServiceCollection services)
+        {
+            return services.BuildServiceProvider();
         }
     }
 }
