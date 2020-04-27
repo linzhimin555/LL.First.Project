@@ -17,6 +17,10 @@
       <Generator>TextTemplatingFileGenerator</Generator>
       <LastGenOutput>LL.FirstCore.FrameWork.Entity.cs</LastGenOutput>
     </None>
+    <None Update="LL.FirstCore.FrameWork.IRepository\LL.FirstCore.FrameWork.IRepository.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>LL.FirstCore.FrameWork.IRepository.cs</LastGenOutput>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +33,17 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>LL.FirstCore.FrameWork.Entity.tt</DependentUpon>
     </Compile>
+    <Compile Update="LL.FirstCore.FrameWork.IRepository\LL.FirstCore.FrameWork.IRepository.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>LL.FirstCore.FrameWork.IRepository.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="LL.FirstCore.FrameWork.Repository\" />
+    <Folder Include="LL.FirstCore.FrameWork.IServices\" />
+    <Folder Include="LL.FirstCore.FrameWork.Services\" />
   </ItemGroup>
 
 </Project>

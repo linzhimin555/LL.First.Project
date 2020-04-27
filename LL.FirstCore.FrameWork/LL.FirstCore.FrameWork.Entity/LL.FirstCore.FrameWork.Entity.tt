@@ -35,7 +35,7 @@
 	//获取到项目的根目录
 	var basePath =Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Host.TemplateFile+"..")+"..")+"..");
 	//实体类生成的类库路径信息(写死，可考虑根据配置生成)
-	var OutputPath1=Path.Combine(basePath,"LL.FirstCore.Model","Models");
+	var OutputPath1=Path.Combine(basePath,"LL.FirstCore.Model","");
 	if (!Directory.Exists(OutputPath1))
 	{
 	    Directory.CreateDirectory(OutputPath1);

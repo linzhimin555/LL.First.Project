@@ -1,0 +1,113 @@
+﻿<#@ template debug="false" hostspecific="true" language="C#" #>
+<#@ output extension=".cs" #>
+<#@ assembly name="System.Core.dll" #>
+<#@ assembly name="System.Data.dll" #>
+<#@ assembly name="System.Data.DataSetExtensions.dll" #>
+<#@ assembly name="System.Xml.dll" #>
+<#@ assembly name="C:\Users\Administrator\.nuget\packages\mysql.data\8.0.14\lib\net452\MySql.Data.dll" #>
+<#@ import namespace="System" #>
+<#@ import namespace="System.Xml" #>
+<#@ import namespace="System.Linq" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Collections.Generic" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="MySql.Data.MySqlClient" #>
+
+<#@ include file="$(ProjectDir)Model.ttinclude"	#>
+<#@ include file="$(ProjectDir)MySqlHelper.ttinclude"  #>
+
+<# 
+	//获取到项目的根目录
+	var basePath =Path.GetDirectoryName(Path.GetDirectoryName(Path.GetDirectoryName(Host.TemplateFile+"..")+"..")+"..");
+	//实体类生成的类库路径信息(写死，可考虑根据配置生成)
+	var OutputPath1=Path.Combine(basePath,"LL.FirstCore.IRepository","");
+	if (!Directory.Exists(OutputPath1))
+	{
+	    Directory.CreateDirectory(OutputPath1);
+	}
+	#> 
+<# var manager = new Manager(Host, GenerationEnvironment, true) { OutputPath = OutputPath1 }; #>
+
+<# 
+	var tableName=config.TableName;
+ #>
+<# 
+if(tableName!="")
+{
+#>  
+<# manager.StartBlock("I"+ tableName +"Repository"+".cs"); #>
+using System;
+using <#=config.ModelNameSpace#>;
+
+namespace <#=config.IRepositoryNameSpace#>
+{	
+	/// <summary>
+	/// I<#=tableName#>Repository
+	/// </summary>	
+	public interface I<#=tableName#>Repository : IBaseRepository<<#=tableName#>>
+    {
+
+    }
+}
+<# 
+  manager.EndBlock();
+  manager.Process(true);
+}
+else
+{ 
+#>
+<# 
+    MySqlConnection conn = new MySqlConnection(config.ConnectionString); 
+    conn.Open(); 
+    System.Data.DataTable schema = conn.GetSchema("TABLES"); 
+ #>
+<# 
+    foreach(System.Data.DataRow row in schema.Rows) 
+    {  
+		manager.StartBlock("I"+row["TABLE_NAME"].ToString()+"Repository"+".cs");
+	 #>
+using System;
+using <#=config.ModelNameSpace#>;
+
+namespace <#=config.IRepositoryNameSpace#>
+{	
+	/// <summary>
+	/// I<#=row["TABLE_NAME"].ToString()#>Repository
+	/// </summary>	
+	public interface I<#=row["TABLE_NAME"].ToString()#>Repository : IBaseRepository<<#=row["TABLE_NAME"].ToString()#>>
+    {
+
+    }
+}
+	<# 
+		manager.EndBlock(); 
+		} 
+
+		{  
+		manager.StartBlock("IBaseRepository.cs");
+	 #>
+using System;
+using <#=config.ModelNameSpace#>;
+
+namespace <#=config.IRepositoryNameSpace#>
+{	
+	/// <summary>
+	/// IBaseRepository
+	/// </summary>	
+	public interface IBaseRepository<TEntity> where TEntity : class
+    {
+
+    }
+}
+	<# 
+		manager.EndBlock(); 
+		} 
+		manager.Process(true);
+	}
+	#> 
+
+	
+
+
+

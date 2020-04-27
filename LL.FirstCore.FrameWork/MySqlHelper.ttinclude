@@ -149,8 +149,8 @@ class config
         public static readonly string DbDatabase = "";
         public static readonly string TableName = "";
 		public static readonly string ModelNameSpace = "LL.FirstCore.Model";
-		public static readonly string IRepositoryNameSpace = "App.IRepository";
-		public static readonly string RepositoryNameSpace = "App.Repository";
-		public static readonly string IServicesNameSpace = "App.IServices";
-		public static readonly string ServicesNameSpace = "App.Services";
+		public static readonly string IRepositoryNameSpace = "LL.FirstCore.IRepository";
+		public static readonly string RepositoryNameSpace = "LL.FirstCore.Repository";
+		public static readonly string IServicesNameSpace = "LL.FirstCore.IServices";
+		public static readonly string ServicesNameSpace = "LL.FirstCore.Services";
 	}#>
