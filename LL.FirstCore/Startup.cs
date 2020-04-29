@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
+using LL.FirstCore.Extensions;
 using LL.FirstCore.SwaggerFilter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -57,45 +58,7 @@ namespace LL.FirstCore
 
             #region using Swagger
             provider = BuildServiceProvider(services).GetRequiredService<IApiVersionDescriptionProvider>();
-            services.AddSwaggerGen(option =>
-            {
-                foreach (var descriptiopn in provider.ApiVersionDescriptions)
-                {
-                    option.SwaggerDoc(descriptiopn.GroupName, new OpenApiInfo()
-                    {
-                        Version = descriptiopn.ApiVersion.ToString(),
-                        Title = $"LL.FirstCore 接口文档--NetCore 3.1",
-                        Description = "LL.FirstCore Api",
-                        Contact = new OpenApiContact { Name = "LL.FirstCore", Email = "1137020867@qq.com", Url = new Uri("https://github.com/linzhimin555/LL.First.Project") },
-                        License = new OpenApiLicense
-                        {
-                            Name = $"LL.FirstCore 官方文档",
-                            Url = new Uri("https://github.com/linzhimin555/LL.First.Project/blob/master/README.md")
-                        }
-                    });
-                }
-
-                option.DocInclusionPredicate((docName, apiDesc) =>
-                {
-                    var versions = apiDesc.CustomAttributes()
-                        .OfType<ApiVersionAttribute>()
-                        .SelectMany(attr => attr.Versions);
-
-                    return versions.Any(v => $"v{v.ToString()}" == docName);
-                });
-
-                option.OperationFilter<RemoveVersionParameterOperationFilter>();
-                option.DocumentFilter<SetVersionInPathDocumentFilter>();
-
-                //以下两种写法等效
-                var temPath = Path.Combine(AppContext.BaseDirectory, $"{typeof(Startup).Assembly.GetName().Name}.xml");
-                //var temPath = Path.Combine(AppContext.BaseDirectory, $"{Assembly.GetExecutingAssembly().GetName().Name}.xml");                
-                option.IncludeXmlComments(temPath, true);
-                //加入控制器注释描述信息
-                var basePath = AppContext.BaseDirectory;
-                var xmlPath = Path.Combine(basePath, "LL.FirstCore.xml");//这个就是刚刚配置的xml文件名
-                option.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
-            });
+            services.AddSwaggerService(provider);
             #endregion
         }
 

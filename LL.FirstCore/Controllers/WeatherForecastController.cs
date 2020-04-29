@@ -40,6 +40,7 @@ namespace LL.FirstCore.Controllers
         ///
         /// </remarks>
         /// <returns></returns>
+        [ApiExplorerSettings(IgnoreApi = true)]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
