@@ -10,3 +10,7 @@
 
 > <font  color='red'> 注意点:版本控制中apiversion=2.0与apiversion=2会自动划分为同一个版本号</font>
 
+## T4模板根据数据表生成框架基本代码
+
+> MySqlHelper.ttinclude主要用于対生成的命名空间以及数据库连接信息进行配置处理
+
