@@ -54,7 +54,7 @@ namespace LL.FirstCore
 
             //测试读取配置信息帮助类
             var str = ConfigHelper.GetDefaultJsonValue("AllowedHosts"); //默认配置文件
-            var otherStr = ConfigHelper.GetJson("test.json", "AllowedHosts");   //其他json文件信息
+            var otherStr = ConfigHelper.GetAppSetting("test.json", "AllowedHosts");   //其他json文件信息
             //下面写法将配置信息以对象形式来表达，并以单例方式注册到服务容器中
             services.AddOptions().Configure<string>(Configuration.GetSection("AllowedHosts"));
         }

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace LL.FirstCore.Common.Config
 {
     /// <summary>
-    /// 读取配置信息帮助类
+    /// appsettings.json操作类
     /// </summary>
     public class ConfigHelper
     {
@@ -50,31 +50,32 @@ namespace LL.FirstCore.Common.Config
         /// <summary>
         /// 获取节点value值
         /// </summary>
-        /// <param name="sections">各层节点值</param>
+        /// <param name="sections">各层节点值按顺序写</param>
         /// <returns></returns>
         public static string GetDefaultJsonValue(params string[] sections)
         {
-            if (sections != null && sections.Length > 0)
+            if (sections == null || sections.Length == 0)
             {
-                return Configuration[string.Join(":", sections)];
+                return null;
             }
 
-            return null;
+            return Configuration[string.Join(":", sections)];
         }
 
-        #region 从指定文件读取配置信息
+        #region 从指定文件读取配置信息(单纯的添加方法尝试，若是读取整个json文件，直接读取字符串信息并反序列化为对象来的更加方便)
         /// <summary>
         /// 获取指定配置文件指定键的值
         /// </summary>
         /// <param name="configPath">指定的json文件路径</param>
         /// <param name="key">节点Key</param>
         /// <returns></returns>
-        public static string GetJson(string configPath, string key)
+        public static string GetAppSetting(string configPath, string key)
         {
             if (string.IsNullOrEmpty(configPath) || string.IsNullOrEmpty(key))
                 return null;
 
             var config = new ConfigurationBuilder().AddJsonFile(configPath).Build();
+
             return config.GetSection(key).Value;
         }
 
@@ -98,6 +99,7 @@ namespace LL.FirstCore.Common.Config
                 .BuildServiceProvider()
                 .GetService<IOptions<T>>()
                 .Value;
+
             return appconfig;
         }
 
