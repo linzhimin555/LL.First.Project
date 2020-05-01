@@ -1,11 +1,5 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
+using LL.FirstCore.Common.Config;
 using LL.FirstCore.Extensions;
-using LL.FirstCore.SwaggerFilter;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
@@ -13,9 +7,6 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using Microsoft.OpenApi.Models;
-using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace LL.FirstCore
 {
@@ -60,6 +51,12 @@ namespace LL.FirstCore
             provider = BuildServiceProvider(services).GetRequiredService<IApiVersionDescriptionProvider>();
             services.AddSwaggerService(provider);
             #endregion
+
+            //测试读取配置信息帮助类
+            var str = ConfigHelper.GetDefaultJsonValue("AllowedHosts"); //默认配置文件
+            var otherStr = ConfigHelper.GetJson("test.json", "AllowedHosts");   //其他json文件信息
+            //下面写法将配置信息以对象形式来表达，并以单例方式注册到服务容器中
+            services.AddOptions().Configure<string>(Configuration.GetSection("AllowedHosts"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -16,6 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\LL.FirstCore.Common\LL.FirstCore.Common.csproj" />
     <ProjectReference Include="..\LL.FirstCore.Model\LL.FirstCore.Model.csproj" />
   </ItemGroup>
 

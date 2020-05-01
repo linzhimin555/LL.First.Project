@@ -1,5 +1,7 @@
 # LL.First.Core
 
+.Net Core 官方文档：https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/startup?view=aspnetcore-2.2
+
 ## Swagger+ApiVersion进行版本控制
 
 > 参考链接:
@@ -14,3 +16,8 @@
 
 > MySqlHelper.ttinclude主要用于対生成的命名空间以及数据库连接信息进行配置处理
 
+## IConfiguration
+
+> 官方介绍：https://docs.microsoft.com/zh-cn/dotnet/api/microsoft.extensions.configuration.iconfiguration?view=dotnet-plat-ext-3.1
+>
+> 参考博文：https://www.cnblogs.com/nimorl/p/12570823.html，https://www.cnblogs.com/smartsmile/p/11721544.html
