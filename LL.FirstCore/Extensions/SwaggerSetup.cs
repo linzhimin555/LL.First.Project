@@ -22,7 +22,7 @@ namespace LL.FirstCore.Extensions
         {
             if (services == null)
                 throw new ArgumentException(nameof(services));
-
+            
             services.AddSwaggerGen(option =>
             {
                 foreach (var descriptiopn in provider.ApiVersionDescriptions)
@@ -61,6 +61,14 @@ namespace LL.FirstCore.Extensions
                 var basePath = AppContext.BaseDirectory;
                 var xmlPath = Path.Combine(basePath, "LL.FirstCore.xml");//这个就是刚刚配置的xml文件名
                 option.IncludeXmlComments(xmlPath, true);//默认的第二个参数是false，这个是controller的注释，记得修改
+
+                option.AddSecurityDefinition("JwtBearer", new OpenApiSecurityScheme
+                {
+                    Description = "JWT授权Bearer {token}",
+                    Name = "Authorization",//jwt默认的参数名称
+                    In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)
+                    Type = SecuritySchemeType.ApiKey
+                });
             });
         }
     }

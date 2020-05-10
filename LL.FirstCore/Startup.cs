@@ -1,12 +1,19 @@
 using LL.FirstCore.Common.Config;
+using LL.FirstCore.Common.Jwt;
 using LL.FirstCore.Extensions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Text;
 
 namespace LL.FirstCore
 {
@@ -47,10 +54,35 @@ namespace LL.FirstCore
             });
             #endregion
 
+            services.Configure<JwtSetting>(Configuration.GetSection("JwtSetting"));
+
+            services.AddAuthentication("Bearer")
+                .AddJwtBearer("Bearer", options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        //ValidIssuer = Configuration["JwtSetting:ValidIssuer"],
+                        //ValidAudience = Configuration["JwtSetting:ValidAudience"],
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSetting:IssuerSigningKey"])),
+                    };
+                });
+            #region ÅäÖÃ¿çÓòÇëÇó
+            services.AddCors(options =>
+            {
+                var origins = Configuration.GetSection("AllowOrigins").Get<string[]>();
+                options.AddDefaultPolicy(builder => builder.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+            });
+            #endregion
+
             #region using Swagger
             provider = BuildServiceProvider(services).GetRequiredService<IApiVersionDescriptionProvider>();
             services.AddSwaggerService(provider);
             #endregion
+
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<IJwtProvider, JwtProvider>();
 
             //²âÊÔ¶ÁÈ¡ÅäÖÃÐÅÏ¢°ïÖúÀà
             var str = ConfigHelper.GetDefaultJsonValue("AllowedHosts"); //Ä¬ÈÏÅäÖÃÎÄ¼þ
@@ -71,15 +103,20 @@ namespace LL.FirstCore
             app.UseSwagger();
             app.UseSwaggerUI(option =>
             {
-                foreach (var item in provider.ApiVersionDescriptions)
-                {
-                    option.SwaggerEndpoint($"/swagger/{item.GroupName}/swagger.json", "LL.First.Core V" + item.ApiVersion);
-                }
-                option.RoutePrefix = string.Empty;
+                option.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                //foreach (var item in provider.ApiVersionDescriptions)
+                //{
+                //    option.SwaggerEndpoint($"/swagger/{item.GroupName}/swagger.json", "LL.First.Core V" + item.ApiVersion);
+                //}
+                //option.RoutePrefix = string.Empty;
             });
             #endregion
+            app.UseCors();
+            app.UseHttpsRedirection();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

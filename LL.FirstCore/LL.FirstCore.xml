@@ -4,6 +4,14 @@
         <name>LL.FirstCore</name>
     </assembly>
     <members>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.#ctor(Microsoft.Extensions.Logging.ILogger{LL.FirstCore.Controllers.v1.ValuesController},LL.FirstCore.Common.Jwt.IJwtProvider)">
+            <summary>
+            
+            </summary>
+            <param name="logger"></param>
+            <param name="jwtProvider"></param>
+            <param name="userService"></param>
+        </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Get">
             <summary>
             v1版本
@@ -13,6 +21,33 @@
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Post">
             <summary>
             v2版本
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Login(System.String,System.String)">
+            <summary>
+             登陆 获取token
+            </summary>
+            <param name="userName"></param>
+            <param name="Password"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.GetToken">
+            <summary>
+            这是个测试
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.SerializeJwt(System.String)">
+            <summary>
+            解析
+            </summary>
+            <param name="jwtStr"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.GetId">
+            <summary>
+            post请求
             </summary>
             <returns></returns>
         </member>
