@@ -51,6 +51,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.UploadTest(Microsoft.AspNetCore.Http.IFormFile)">
+            <summary>
+            文件测试接口
+            </summary>
+            <param name="formFile"></param>
+            <returns></returns>
+        </member>
         <member name="M:LL.FirstCore.Controllers.v2.ValuesController.Get">
             <summary>
             v2版本

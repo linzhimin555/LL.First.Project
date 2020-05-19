@@ -88,7 +88,6 @@ namespace LL.FirstCore.Controllers.v1
         /// </summary>
         /// <param name="jwtStr"></param>
         /// <returns></returns>
-        [Authorize]
         private void SerializeJwt(string jwtStr)
         {
             var jwtHandler = new JwtSecurityTokenHandler();
@@ -116,11 +115,21 @@ namespace LL.FirstCore.Controllers.v1
         /// </summary>
         /// <returns></returns>
         [HttpGet("GetId")]
-        [Authorize]
         public ActionResult GetId()
         {
             var id = _jwtProvider.GetUserId();
             return new JsonResult(id);
+        }
+
+        /// <summary>
+        /// 文件测试接口
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <returns></returns>
+        [HttpPost("UploadTest")]
+        public IActionResult UploadTest(IFormFile formFile)
+        {
+            return Ok("上传文件成功!!!");
         }
     }
 }

@@ -103,21 +103,21 @@ namespace LL.FirstCore
             app.UseSwagger();
             app.UseSwaggerUI(option =>
             {
-                option.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
-                //foreach (var item in provider.ApiVersionDescriptions)
-                //{
-                //    option.SwaggerEndpoint($"/swagger/{item.GroupName}/swagger.json", "LL.First.Core V" + item.ApiVersion);
-                //}
-                //option.RoutePrefix = string.Empty;
+                //option.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                foreach (var item in provider.ApiVersionDescriptions)
+                {
+                    option.SwaggerEndpoint($"/swagger/{item.GroupName}/swagger.json", "LL.First.Core V" + item.ApiVersion);
+                }
+                option.RoutePrefix = string.Empty;
             });
             #endregion
             app.UseCors();
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            //开启认证
             app.UseAuthentication();
-
+            //开启授权
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
