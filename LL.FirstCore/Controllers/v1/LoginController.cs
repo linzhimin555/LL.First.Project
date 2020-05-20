@@ -17,7 +17,7 @@ namespace LL.FirstCore.Controllers.v1
         /// <summary>
         /// 用户登录并获取Jwt
         /// </summary>
-        /// <param name="name">用户名</param>
+        /// <param name="username">用户名</param>
         /// <param name="password">密码</param>
         /// <returns></returns>
         [HttpGet]
@@ -48,7 +48,7 @@ namespace LL.FirstCore.Controllers.v1
         /// <returns></returns>
         [HttpGet]
         [Route("UserInfo")]
-        [Authorize]
+        [Authorize(Roles = "admin", AuthenticationSchemes = "Bearer")]
         public IActionResult UserInfo()
         {
             var obj = new

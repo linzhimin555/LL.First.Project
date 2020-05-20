@@ -1,6 +1,7 @@
 using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
 using LL.FirstCore.Extensions;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -14,6 +15,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace LL.FirstCore
 {
@@ -56,22 +58,45 @@ namespace LL.FirstCore
 
             services.Configure<JwtSetting>(Configuration.GetSection("JwtSetting"));
 
-            //开启Jwt认证服务
+            #region 官方JWT认证方式
+            //开启bearer认证，注入jwtbearer认证服务
+            /*AddAuthentication("Bearer")==AddAuthentication(x =>
+            {
+                x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })*/
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
+                    //token认证对象
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
+                        //3+2模式 (发行人+订阅人+秘钥)+(生命周期+过期时间)
+
                         ValidateIssuer = true,      //是否验证Issuer
-                        ValidateAudience = true,    //是否验证Audience
-                        ValidateLifetime = true,    //是否验证失效时间
-                        ClockSkew = TimeSpan.FromSeconds(30),
-                        ValidateIssuerSigningKey = true,    //是否验证SecurityKey
                         ValidIssuer = Configuration["JwtSetting:Issure"],   //验证与配置文件中设置的是否一致
+                        ValidateAudience = true,    //是否验证Audience
                         ValidAudience = Configuration["JwtSetting:Audience"],   //验证与配置文件中设置的是否一致
+                        ValidateIssuerSigningKey = true,    //是否验证SecurityKey
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSetting:Secret"])),
+
+                        ValidateLifetime = true,    //是否验证失效时间,使用当前时间与token中的Claim中声明的Notbefore和expires对比
+                        RequireExpirationTime = true,    //是否要求token的claim中必须包含Expires
+                        //允许的服务器时间偏移量  
+                        ClockSkew = TimeSpan.FromSeconds(30)
+                    };
+                    //Jwt事件(JwtBearer认证中，默认是通过Http的Authorization头来获取的，这也是最推荐的做法，但是在某些场景下，我们可能会使用Url或者是Cookie来传递Token)
+                    options.Events = new JwtBearerEvents()
+                    {
+                        OnMessageReceived = context =>
+                        {
+                            context.Token = context.Request.Query["access_token"];
+                            return Task.CompletedTask;
+                        }
                     };
                 });
+            #endregion
+
             #region 配置跨域请求
             services.AddCors(options =>
             {
