@@ -4,13 +4,65 @@
         <name>LL.FirstCore</name>
     </assembly>
     <members>
+        <member name="T:LL.FirstCore.Authorization.JwtHelper">
+            <summary>
+            Jwt帮助类
+            </summary>
+        </member>
+        <member name="M:LL.FirstCore.Authorization.JwtHelper.IssueJwtStr(LL.FirstCore.Authorization.JwtTokenModel)">
+            <summary>
+            颁发Jwt字符串
+            </summary>
+            <param name="tokenModle"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Authorization.JwtHelper.SerializeJwt(System.String)">
+            <summary>
+            解析Jwttoken信息
+            </summary>
+            <param name="jwtStr">token信息</param>
+            <returns></returns>
+        </member>
+        <member name="T:LL.FirstCore.Authorization.JwtTokenModel">
+            <summary>
+            Jwt令牌实体类
+            </summary>
+        </member>
+        <member name="P:LL.FirstCore.Authorization.JwtTokenModel.UserId">
+            <summary>
+            用户编号
+            </summary>
+        </member>
+        <member name="P:LL.FirstCore.Authorization.JwtTokenModel.Role">
+            <summary>
+            角色
+            </summary>
+        </member>
+        <member name="P:LL.FirstCore.Authorization.JwtTokenModel.Work">
+            <summary>
+            职能
+            </summary>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.LoginController.JwtTokenInfo(System.String,System.String)">
+            <summary>
+            用户登录并获取Jwt
+            </summary>
+            <param name="name">用户名</param>
+            <param name="password">密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.LoginController.UserInfo">
+            <summary>
+            获取用户个人信息
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.#ctor(Microsoft.Extensions.Logging.ILogger{LL.FirstCore.Controllers.v1.ValuesController},LL.FirstCore.Common.Jwt.IJwtProvider)">
             <summary>
             
             </summary>
             <param name="logger"></param>
             <param name="jwtProvider"></param>
-            <param name="userService"></param>
         </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Get">
             <summary>

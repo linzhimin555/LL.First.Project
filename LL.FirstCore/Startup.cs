@@ -56,16 +56,20 @@ namespace LL.FirstCore
 
             services.Configure<JwtSetting>(Configuration.GetSection("JwtSetting"));
 
+            //开启Jwt认证服务
             services.AddAuthentication("Bearer")
                 .AddJwtBearer("Bearer", options =>
                 {
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
-                        ValidateIssuer = false,
-                        ValidateAudience = false,
-                        //ValidIssuer = Configuration["JwtSetting:ValidIssuer"],
-                        //ValidAudience = Configuration["JwtSetting:ValidAudience"],
-                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSetting:IssuerSigningKey"])),
+                        ValidateIssuer = true,      //是否验证Issuer
+                        ValidateAudience = true,    //是否验证Audience
+                        ValidateLifetime = true,    //是否验证失效时间
+                        ClockSkew = TimeSpan.FromSeconds(30),
+                        ValidateIssuerSigningKey = true,    //是否验证SecurityKey
+                        ValidIssuer = Configuration["JwtSetting:Issure"],   //验证与配置文件中设置的是否一致
+                        ValidAudience = Configuration["JwtSetting:Audience"],   //验证与配置文件中设置的是否一致
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(Configuration["JwtSetting:Secret"])),
                     };
                 });
             #region 配置跨域请求
@@ -103,7 +107,6 @@ namespace LL.FirstCore
             app.UseSwagger();
             app.UseSwaggerUI(option =>
             {
-                //option.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
                 foreach (var item in provider.ApiVersionDescriptions)
                 {
                     option.SwaggerEndpoint($"/swagger/{item.GroupName}/swagger.json", "LL.First.Core V" + item.ApiVersion);
@@ -112,12 +115,12 @@ namespace LL.FirstCore
             });
             #endregion
             app.UseCors();
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseRouting();
-            //开启认证
+            // 先开启认证
             app.UseAuthentication();
-            //开启授权
+            // 然后是授权中间件
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

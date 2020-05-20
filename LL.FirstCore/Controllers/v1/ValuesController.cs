@@ -26,7 +26,6 @@ namespace LL.FirstCore.Controllers.v1
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="jwtProvider"></param>
-        /// <param name="userService"></param>
         public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider)
         {
             _logger = logger;
