@@ -2,10 +2,14 @@
 using LL.FirstCore.Repository.Context;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace LL.FirstCore.Repository.Base
@@ -14,10 +18,11 @@ namespace LL.FirstCore.Repository.Base
     {
         private BaseDbContext _dbContext;
         private DbSet<TEntity> Table { get; }
-        private DatabaseFacade DataBase { get; }
+        private DatabaseFacade Database { get; }
 
         public BaseRepository(BaseDbContext context)
         {
+            _dbContext.Database.GetDbConnection().ConnectionString = string.Empty;
             this._dbContext = context;
             if (_dbContext == null)
                 return;
@@ -79,6 +84,53 @@ namespace LL.FirstCore.Repository.Base
             return await this.Table.FindAsync(keyValue);
         }
 
+        public TEntity GetSingleOrDefault(Expression<Func<TEntity, bool>> @where = null)
+        {
+            return where == null ? Table.SingleOrDefault() : Table.SingleOrDefault(where);
+        }
+        public async Task<TEntity> GetSingleOrDefaultAsync(Expression<Func<TEntity, bool>> @where = null)
+        {
+            return await (where == null ? Table.SingleOrDefaultAsync() : Table.SingleOrDefaultAsync(where));
+        }
+
+        public int Count(Expression<Func<TEntity, bool>> @where = null)
+        {
+            return @where == null ? Table.Count(@where) : Table.Count(@where);
+        }
+
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> @where = null)
+        {
+            return await (where == null ? Table.CountAsync() : Table.CountAsync(@where));
+        }
+
+        public bool Exist(Expression<Func<TEntity, bool>> @where = null)
+        {
+            return @where == null ? Table.Any() : Table.Any(@where);
+        }
+
+        public async Task<bool> ExistAsync(Expression<Func<TEntity, bool>> @where = null)
+        {
+            return await (@where == null ? Table.AnyAsync() : Table.AnyAsync(@where));
+        }
+
+        public IEnumerable<TEntity> GetByPagination(Expression<Func<TEntity, bool>> @where, int pageSize, int pageIndex, bool asc = true, params Func<TEntity, object>[] @orderby)
+        {
+            var filter = Entities.Where(where);
+            if (orderby != null)
+            {
+                foreach (var func in orderby)
+                {
+                    filter = asc ? filter.OrderBy(func).AsQueryable() : filter.OrderByDescending(func).AsQueryable();
+                }
+            }
+            return filter.Skip(pageSize * (pageIndex - 1)).Take(pageSize);
+        }
+
+        public List<TEntity> GetBySql(string sql, params object[] parameters)
+        {
+            return Table.FromSqlRaw(sql, parameters).Cast<TEntity>().ToList();
+        }
+
         public IQueryable<TEntity> Entities
         {
             get { return Table.AsNoTracking(); }
@@ -137,6 +189,25 @@ namespace LL.FirstCore.Repository.Base
         {
             Table.UpdateRange(entities);
         }
+
+        public virtual int Update(TEntity model, params string[] updateColumns)
+        {
+            if (updateColumns != null && updateColumns.Length > 0)
+            {
+                if (_dbContext.Entry(model).State == EntityState.Added || _dbContext.Entry(model).State == EntityState.Detached)
+                    Table.Attach(model);
+                foreach (var propertyName in updateColumns)
+                {
+                    _dbContext.Entry(model).Property(propertyName).IsModified = true;
+                }
+            }
+            else
+            {
+                _dbContext.Entry(model).State = EntityState.Modified;
+            }
+
+            return SaveChanges();
+        }
         #endregion
 
         #region Delete
@@ -161,6 +232,16 @@ namespace LL.FirstCore.Repository.Base
             }
 
             return result;
+        }
+
+        public int DeleteBySql(string sql, params object[] parameters)
+        {
+            return Database.ExecuteSqlRaw(sql, CancellationToken.None, parameters);
+        }
+
+        public async Task<int> ExecuteSqlWithNonQueryAsync(string sql, params object[] parameters)
+        {
+            return await Database.ExecuteSqlRawAsync(sql, CancellationToken.None, parameters);
         }
         #endregion
     }

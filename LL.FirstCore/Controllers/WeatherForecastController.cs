@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -10,6 +11,7 @@ namespace LL.FirstCore.Controllers
 {
     [ApiVersion("2")]
     [ApiController]
+    //[EnableCors("any")]
     [Route("v{version:apiVersion}/[controller]")]
     public class WeatherForecastController : ControllerBase
     {
