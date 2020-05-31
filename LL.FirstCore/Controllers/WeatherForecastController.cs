@@ -42,10 +42,15 @@ namespace LL.FirstCore.Controllers
         ///
         /// </remarks>
         /// <returns></returns>
-        [ApiExplorerSettings(IgnoreApi = true)]
+        [ApiExplorerSettings(IgnoreApi = false)]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
+            _logger.LogDebug("Debug:获取天气数据信息");
+            _logger.LogInformation("Information:获取天气数据信息");
+            _logger.LogWarning("Warning:获取天气数据信息");
+            _logger.LogError("Error:获取天气数据信息");
+            _logger.LogCritical("Critical:获取天气数据信息");
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

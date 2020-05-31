@@ -22,7 +22,7 @@ namespace LL.FirstCore.Repository.Base
 
         public BaseRepository(BaseDbContext context)
         {
-            _dbContext.Database.GetDbConnection().ConnectionString = string.Empty;
+            //_dbContext.Database.GetDbConnection().ConnectionString = string.Empty;
             this._dbContext = context;
             if (_dbContext == null)
                 return;
