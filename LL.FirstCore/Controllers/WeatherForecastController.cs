@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LL.FirstCore.Repository.Context;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,10 +22,12 @@ namespace LL.FirstCore.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
+        private readonly BaseDbContext _context;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, BaseDbContext context)
         {
             _logger = logger;
+            _context = context;
         }
 
         /// <summary>
@@ -46,11 +49,9 @@ namespace LL.FirstCore.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            _logger.LogDebug("Debug:获取天气数据信息");
-            _logger.LogInformation("Information:获取天气数据信息");
-            _logger.LogWarning("Warning:获取天气数据信息");
-            _logger.LogError("Error:获取天气数据信息");
-            _logger.LogCritical("Critical:获取天气数据信息");
+            _context.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
+            _context.SaveChanges();
+
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast
             {

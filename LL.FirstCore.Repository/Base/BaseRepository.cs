@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
@@ -19,28 +20,32 @@ namespace LL.FirstCore.Repository.Base
         private BaseDbContext _dbContext;
         private DbSet<TEntity> Table { get; }
         private DatabaseFacade Database { get; }
+        /// <summary>
+        /// 数据库连接字符串
+        /// </summary>
+        private readonly string ConnStr;
 
         public BaseRepository(BaseDbContext context)
         {
-            //_dbContext.Database.GetDbConnection().ConnectionString = string.Empty;
             this._dbContext = context;
             if (_dbContext == null)
                 return;
 
             Table = _dbContext.Set<TEntity>();
+            ConnStr = _dbContext.Database.GetDbConnection().ConnectionString;
         }
 
-        public void BeginTransaction()
+        public void BeginTransaction(IsolationLevel isolationLevel = IsolationLevel.Unspecified)
         {
             if (_dbContext.Database.CurrentTransaction == null)
             {
-                _dbContext.Database.BeginTransaction();
+                _dbContext.Database.BeginTransaction(isolationLevel);
             }
         }
 
         public void Commit()
         {
-            var transaction = this._dbContext.Database.CurrentTransaction;
+            var transaction = _dbContext.Database.CurrentTransaction;
             if (transaction != null)
             {
                 try
@@ -55,7 +60,7 @@ namespace LL.FirstCore.Repository.Base
             }
         }
 
-        public void Rollbasck()
+        public void Rollback()
         {
             if (_dbContext.Database.CurrentTransaction != null)
             {
@@ -68,7 +73,7 @@ namespace LL.FirstCore.Repository.Base
             return _dbContext.SaveChanges();
         }
 
-        public async Task<int> SaveChangeAsync()
+        public async Task<int> SaveChangesAsync()
         {
             return await _dbContext.SaveChangesAsync();
         }
@@ -158,7 +163,7 @@ namespace LL.FirstCore.Repository.Base
             await Table.AddAsync(entity);
             if (isSave)
             {
-                await SaveChangeAsync();
+                await SaveChangesAsync();
             }
 
             return entity;
@@ -244,5 +249,10 @@ namespace LL.FirstCore.Repository.Base
             return await Database.ExecuteSqlRawAsync(sql, CancellationToken.None, parameters);
         }
         #endregion
+
+        public void Dispose()
+        {
+            _dbContext.Dispose();
+        }
     }
 }

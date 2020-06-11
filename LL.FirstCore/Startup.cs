@@ -1,12 +1,14 @@
 using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
 using LL.FirstCore.Extensions;
+using LL.FirstCore.Repository.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -108,6 +110,10 @@ namespace LL.FirstCore
             #region using Swagger
             provider = BuildServiceProvider(services).GetRequiredService<IApiVersionDescriptionProvider>();
             services.AddSwaggerService(provider);
+            #endregion
+
+            #region Ìí¼ÓEF Core·þÎñ
+            services.AddDbContext<BaseDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             #endregion
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
