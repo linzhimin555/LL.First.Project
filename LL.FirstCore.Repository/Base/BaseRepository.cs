@@ -131,9 +131,9 @@ namespace LL.FirstCore.Repository.Base
             return filter.Skip(pageSize * (pageIndex - 1)).Take(pageSize);
         }
 
-        public List<TEntity> GetBySql(string sql, params object[] parameters)
+        public IEnumerable<TEntity> GetBySql(string sql, params object[] parameters)
         {
-            return Table.FromSqlRaw(sql, parameters).Cast<TEntity>().ToList();
+            return Table.FromSqlRaw(sql, parameters).Cast<TEntity>().AsEnumerable();
         }
 
         public IQueryable<TEntity> Entities

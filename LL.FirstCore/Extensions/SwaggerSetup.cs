@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
 namespace LL.FirstCore.Extensions
@@ -22,7 +23,7 @@ namespace LL.FirstCore.Extensions
         {
             if (services == null)
                 throw new ArgumentException(nameof(services));
-            
+
             services.AddSwaggerGen(option =>
             {
                 foreach (var descriptiopn in provider.ApiVersionDescriptions)
@@ -30,7 +31,7 @@ namespace LL.FirstCore.Extensions
                     option.SwaggerDoc(descriptiopn.GroupName, new OpenApiInfo()
                     {
                         Version = descriptiopn.ApiVersion.ToString(),
-                        Title = $"LL.FirstCore 接口文档--NetCore 3.1",
+                        Title = $"LL.FirstCore 接口文档--{RuntimeInformation.FrameworkDescription}",    //版本控制信息
                         Description = "LL.FirstCore Api",
                         Contact = new OpenApiContact { Name = "LL.FirstCore", Email = "1137020867@qq.com", Url = new Uri("https://github.com/linzhimin555/LL.First.Project") },
                         License = new OpenApiLicense
