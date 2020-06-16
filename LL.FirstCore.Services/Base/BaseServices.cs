@@ -84,7 +84,7 @@ namespace LL.FirstCore.Services.Base
             return _baseRepository.GetByPagination(where, pageSize, pageIndex, asc, orderby);
         }
 
-        public List<TEntity> GetBySql(string sql, params object[] parameters)
+        public IEnumerable<TEntity> GetBySql(string sql, params object[] parameters)
         {
             return _baseRepository.GetBySql(sql, parameters);
         }

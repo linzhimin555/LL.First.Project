@@ -141,6 +141,11 @@
             <response code="201">Returns the newly created item</response>
             <response code="400">If the item is null</response>       
         </member>
+        <member name="T:LL.FirstCore.Extensions.AutofacModuleRegister">
+            <summary>
+            AutoFac 模块注入
+            </summary>
+        </member>
         <member name="T:LL.FirstCore.Extensions.SwaggerSetup">
             <summary>
             swagger服务注册

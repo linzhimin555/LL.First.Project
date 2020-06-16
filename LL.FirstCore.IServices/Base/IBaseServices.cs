@@ -28,7 +28,7 @@ namespace LL.FirstCore.IServices.Base
         /// <returns></returns>
         IEnumerable<TEntity> GetByPagination(Expression<Func<TEntity, bool>> @where, int pageSize, int pageIndex, bool asc = true, params Func<TEntity, object>[] @orderby);
 
-        List<TEntity> GetBySql(string sql, params object[] parameters);
+        IEnumerable<TEntity> GetBySql(string sql, params object[] parameters);
         #endregion
 
         #region Insert

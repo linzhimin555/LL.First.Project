@@ -40,6 +40,8 @@ namespace LL.FirstCore.Extensions
                             Url = new Uri("https://github.com/linzhimin555/LL.First.Project/blob/master/README.md")
                         }
                     });
+                    //Action排序
+                    option.OrderActionsBy(v => v.HttpMethod);
                 }
 
                 option.DocInclusionPredicate((docName, apiDesc) =>

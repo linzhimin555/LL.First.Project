@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using LL.FirstCore.IServices;
+using LL.FirstCore.Model;
 using LL.FirstCore.Repository.Context;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -22,12 +24,12 @@ namespace LL.FirstCore.Controllers
         };
 
         private readonly ILogger<WeatherForecastController> _logger;
-        private readonly BaseDbContext _context;
+        private readonly IPostServices _services;
 
-        public WeatherForecastController(ILogger<WeatherForecastController> logger, BaseDbContext context)
+        public WeatherForecastController(ILogger<WeatherForecastController> logger, IPostServices services)
         {
             _logger = logger;
-            _context = context;
+            _services = services;
         }
 
         /// <summary>
@@ -49,8 +51,7 @@ namespace LL.FirstCore.Controllers
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {
-            _context.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-            _context.SaveChanges();
+            _services.Insert(new Post { Title = "http://blogs.msdn.com/adonet", Content = "测试文本" }, true);
 
             var rng = new Random();
             return Enumerable.Range(1, 5).Select(index => new WeatherForecast

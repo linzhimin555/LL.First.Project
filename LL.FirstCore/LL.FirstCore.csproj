@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="6.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication" Version="2.2.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="3.1.3" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="4.1.1" />
@@ -28,6 +29,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\LL.FirstCore.Common\LL.FirstCore.Common.csproj" />
+    <ProjectReference Include="..\LL.FirstCore.IServices\LL.FirstCore.IServices.csproj" />
     <ProjectReference Include="..\LL.FirstCore.Model\LL.FirstCore.Model.csproj" />
     <ProjectReference Include="..\LL.FirstCore.Repository\LL.FirstCore.Repository.csproj" />
   </ItemGroup>

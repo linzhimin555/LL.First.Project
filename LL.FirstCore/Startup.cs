@@ -1,3 +1,4 @@
+using Autofac;
 using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
 using LL.FirstCore.Extensions;
@@ -114,6 +115,7 @@ namespace LL.FirstCore
 
             #region 添加EF Core服务
             services.AddDbContext<BaseDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddScoped<BaseDbContext>();
             #endregion
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
@@ -124,6 +126,12 @@ namespace LL.FirstCore
             var otherStr = ConfigHelper.GetAppSetting("test.json", "AllowedHosts");   //其他json文件信息
             //下面写法将配置信息以对象形式来表达，并以单例方式注册到服务容器中
             services.AddOptions().Configure<string>(Configuration.GetSection("AllowedHosts"));
+        }
+
+        // 注意在Program.CreateHostBuilder，添加Autofac服务工厂(3.0语法)
+        public void ConfigureContainer(ContainerBuilder builder)
+        {
+            builder.RegisterModule(new AutofacModuleRegister());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
