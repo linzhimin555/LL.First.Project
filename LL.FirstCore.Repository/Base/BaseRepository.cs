@@ -243,6 +243,13 @@ namespace LL.FirstCore.Repository.Base
         {
             return Database.ExecuteSqlRaw(sql, CancellationToken.None, parameters);
         }
+        #endregion
+
+        #region Sql
+        public int ExecuteSqlWithNonQuery(string sql, params object[] parameters)
+        {
+            return Database.ExecuteSqlRaw(sql, CancellationToken.None, parameters);
+        }
 
         public async Task<int> ExecuteSqlWithNonQueryAsync(string sql, params object[] parameters)
         {

@@ -127,7 +127,13 @@ namespace LL.FirstCore.Services.Base
         {
             return _baseRepository.DeleteBySql(sql, parameters);
         }
+        #endregion
 
+        #region Sql
+        public int ExecuteSqlWithNonQuery(string sql, params object[] parameters)
+        {
+            return _baseRepository.ExecuteSqlWithNonQuery(sql, parameters);
+        }
         public async Task<int> ExecuteSqlWithNonQueryAsync(string sql, params object[] parameters)
         {
             return await _baseRepository.ExecuteSqlWithNonQueryAsync(sql, parameters);

@@ -56,7 +56,10 @@ namespace LL.FirstCore.IServices.Base
         Task<int> RemoveAsync(object keyValue);
 
         int DeleteBySql(string sql, params object[] parameters);
+        #endregion
 
+        #region Sql
+        int ExecuteSqlWithNonQuery(string sql, params object[] parameters);
         Task<int> ExecuteSqlWithNonQueryAsync(string sql, params object[] parameters);
         #endregion
     }

@@ -49,13 +49,13 @@ namespace LL.FirstCore.IRepository.Base
         bool Exist(Expression<Func<TEntity, bool>> @where = null);
         Task<bool> ExistAsync(Expression<Func<TEntity, bool>> @where = null);
         /// <summary>
-        /// 伪分页查询
+        /// 分页查询
         /// </summary>
-        /// <param name="where"></param>
-        /// <param name="pageSize"></param>
-        /// <param name="pageIndex"></param>
-        /// <param name="asc"></param>
-        /// <param name="orderby"></param>
+        /// <param name="where">过滤条件</param>
+        /// <param name="pageSize">每页记录数</param>
+        /// <param name="pageIndex">查询页</param>
+        /// <param name="asc">升序或者降序</param>
+        /// <param name="orderby">排序委托</param>
         /// <returns></returns>
         IEnumerable<TEntity> GetByPagination(Expression<Func<TEntity, bool>> @where, int pageSize, int pageIndex, bool asc = true, params Func<TEntity, object>[] @orderby);
 
@@ -87,7 +87,10 @@ namespace LL.FirstCore.IRepository.Base
         Task<int> RemoveAsync(object keyValue);
 
         int DeleteBySql(string sql, params object[] parameters);
+        #endregion
 
+        #region Sql
+        int ExecuteSqlWithNonQuery(string sql, params object[] parameters);
         Task<int> ExecuteSqlWithNonQueryAsync(string sql, params object[] parameters);
         #endregion
     }
