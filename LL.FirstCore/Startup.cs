@@ -117,7 +117,7 @@ namespace LL.FirstCore
             services.AddDbContext<BaseDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
             services.AddScoped<BaseDbContext>();
             #endregion
-
+            //注入类似于HttpContext的上下文
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtProvider, JwtProvider>();
 

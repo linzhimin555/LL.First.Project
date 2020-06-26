@@ -88,6 +88,16 @@ namespace LL.FirstCore.Services.Base
         {
             return _baseRepository.GetBySql(sql, parameters);
         }
+        #region 显示编译查询
+        public IEnumerable<TEntity> GetByCompileQuery(Expression<Func<TEntity, bool>> filter)
+        {
+            return _baseRepository.GetByCompileQuery(filter);
+        }
+        public async Task<IEnumerable<TEntity>> GetByCompileQueryAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            return await _baseRepository.GetByCompileQueryAsync(filter);
+        }
+        #endregion
         #endregion
 
         #region Update

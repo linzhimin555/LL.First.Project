@@ -145,6 +145,20 @@ namespace LL.FirstCore.Repository.Base
         {
             get { return Table; }
         }
+
+        #region 显示编译查询
+        public IEnumerable<TEntity> GetByCompileQuery(Expression<Func<TEntity, bool>> filter)
+        {
+            if (filter == null) filter = m => true;
+            return EF.CompileQuery((BaseDbContext context) => context.Set<TEntity>().AsNoTracking().Where(filter).AsEnumerable())(_dbContext);
+        }
+
+        public async Task<IEnumerable<TEntity>> GetByCompileQueryAsync(Expression<Func<TEntity, bool>> filter)
+        {
+            if (filter == null) filter = m => true;
+            return await EF.CompileAsyncQuery((BaseDbContext context) => context.Set<TEntity>().AsNoTracking().Where(filter).AsEnumerable())(_dbContext);
+        }
+        #endregion
         #endregion
 
         #region Insert

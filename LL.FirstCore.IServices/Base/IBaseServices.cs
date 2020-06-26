@@ -29,6 +29,10 @@ namespace LL.FirstCore.IServices.Base
         IEnumerable<TEntity> GetByPagination(Expression<Func<TEntity, bool>> @where, int pageSize, int pageIndex, bool asc = true, params Func<TEntity, object>[] @orderby);
 
         IEnumerable<TEntity> GetBySql(string sql, params object[] parameters);
+        #region 显示编译查询
+        IEnumerable<TEntity> GetByCompileQuery(Expression<Func<TEntity, bool>> filter);
+        Task<IEnumerable<TEntity>> GetByCompileQueryAsync(Expression<Func<TEntity, bool>> filter);
+        #endregion
         #endregion
 
         #region Insert

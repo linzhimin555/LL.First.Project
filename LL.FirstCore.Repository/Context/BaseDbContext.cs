@@ -14,7 +14,7 @@ namespace LL.FirstCore.Repository.Context
         public DbSet<BaseUserInfo> BaseUserInfos { get; set; }
         public BaseDbContext(DbContextOptions<BaseDbContext> options) : base(options)
         {
-            
+
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
