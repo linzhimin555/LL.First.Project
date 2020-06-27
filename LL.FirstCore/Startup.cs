@@ -1,6 +1,7 @@
 using Autofac;
 using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
+using LL.FirstCore.Common.Logger;
 using LL.FirstCore.Extensions;
 using LL.FirstCore.Repository.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -13,6 +14,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
@@ -114,7 +116,12 @@ namespace LL.FirstCore
             #endregion
 
             #region 添加EF Core服务
-            services.AddDbContext<BaseDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddDbContext<BaseDbContext>(options =>
+            {
+                var loggerFactory = new LoggerFactory();
+                loggerFactory.AddProvider(new EFLoggerProvider());
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).UseLoggerFactory(loggerFactory);
+            });
             services.AddScoped<BaseDbContext>();
             #endregion
             //注入类似于HttpContext的上下文
