@@ -13,3 +13,5 @@
 **/node_modules
 **/maps
 *.css.map
+/LL.FirstCore/internal-nlog.txt
+/Util/Util.csproj

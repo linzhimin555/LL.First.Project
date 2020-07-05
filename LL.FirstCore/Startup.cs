@@ -118,9 +118,7 @@ namespace LL.FirstCore
             #region 添加EF Core服务
             services.AddDbContext<BaseDbContext>(options =>
             {
-                var loggerFactory = new LoggerFactory();
-                loggerFactory.AddProvider(new EFLoggerProvider());
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")).UseLoggerFactory(loggerFactory);
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
             });
             services.AddScoped<BaseDbContext>();
             #endregion
@@ -133,6 +131,7 @@ namespace LL.FirstCore
             var otherStr = ConfigHelper.GetAppSetting("test.json", "AllowedHosts");   //其他json文件信息
             //下面写法将配置信息以对象形式来表达，并以单例方式注册到服务容器中
             services.AddOptions().Configure<string>(Configuration.GetSection("AllowedHosts"));
+            services.AddSingleton<ILogFormat, ContentFormat>();
         }
 
         // 注意在Program.CreateHostBuilder，添加Autofac服务工厂(3.0语法)

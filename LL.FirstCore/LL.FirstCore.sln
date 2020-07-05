@@ -17,7 +17,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LL.FirstCore.Repository", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LL.FirstCore.IRepository", "..\LL.FirstCore.IRepository\LL.FirstCore.IRepository.csproj", "{43AAECE3-1D10-443B-BD56-F38855CEF59C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LL.FirstCore.Common", "..\LL.FirstCore.Common\LL.FirstCore.Common.csproj", "{02036154-A3CF-420E-9DB4-F8F55E75CA52}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LL.FirstCore.Common", "..\LL.FirstCore.Common\LL.FirstCore.Common.csproj", "{02036154-A3CF-420E-9DB4-F8F55E75CA52}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
