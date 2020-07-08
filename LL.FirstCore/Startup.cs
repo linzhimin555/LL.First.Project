@@ -17,8 +17,10 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using StackExchange.Profiling.Storage;
 using System;
 using System.IO;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -110,6 +112,24 @@ namespace LL.FirstCore
             });
             #endregion
 
+            #region 添加miniProfile(https://miniprofiler.com/dotnet/AspDotNetCore)
+            services.AddMemoryCache();
+            services.AddMiniProfiler(options =>
+            {
+                // 设定访问分析结果URL的路由基地址
+                options.RouteBasePath = "/profiler";
+                //（可选）控制存储
+                //（在MemoryCacheStorage中默认为30分钟）
+                (options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(60);
+                // (Optional) Control which SQL formatter to use, InlineFormatter is the default
+                options.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
+                // 设定弹出窗口的位置是左下角
+                options.PopupRenderPosition = StackExchange.Profiling.RenderPosition.Left;
+                // 设定在弹出的明细窗口里会显示Time With Children这列
+                options.PopupShowTimeWithChildren = true;
+            }).AddEntityFramework();
+            #endregion
+
             #region using Swagger
             provider = BuildServiceProvider(services).GetRequiredService<IApiVersionDescriptionProvider>();
             services.AddSwaggerService(provider);
@@ -157,17 +177,26 @@ namespace LL.FirstCore
                     option.SwaggerEndpoint($"/swagger/{item.GroupName}/swagger.json", "LL.First.Core V" + item.ApiVersion);
                 }
                 option.RoutePrefix = string.Empty;
+                // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法,记得这个字符串的写法,记得这个字符串的写法：程序集名.index.html
+                option.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("LL.FirstCore.index.html");
             });
             #endregion
-            app.UseCors();
-            //app.UseHttpsRedirection();
 
+            // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
+            // CORS跨域
+            app.UseCors();
+            // 跳转https
+            //app.UseHttpsRedirection();
+            // 使用静态文件
+            app.UseStaticFiles();
+            //
             app.UseRouting();
             // 先开启认证
             app.UseAuthentication();
             // 然后是授权中间件
             app.UseAuthorization();
-
+            // 性能分析
+            app.UseMiniProfiler();
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
