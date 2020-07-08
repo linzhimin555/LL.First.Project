@@ -127,6 +127,7 @@ namespace LL.FirstCore
                 options.PopupRenderPosition = StackExchange.Profiling.RenderPosition.Left;
                 // 设定在弹出的明细窗口里会显示Time With Children这列
                 options.PopupShowTimeWithChildren = true;
+                options.ColorScheme = StackExchange.Profiling.ColorScheme.Auto;
             }).AddEntityFramework();
             #endregion
 
@@ -138,7 +139,7 @@ namespace LL.FirstCore
             #region 添加EF Core服务
             services.AddDbContext<BaseDbContext>(options =>
             {
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), builder => builder.EnableRetryOnFailure());
             });
             services.AddScoped<BaseDbContext>();
             #endregion
