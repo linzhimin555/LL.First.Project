@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.WebEncoders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using StackExchange.Profiling.Storage;
@@ -22,6 +23,7 @@ using System;
 using System.IO;
 using System.Reflection;
 using System.Text;
+using System.Text.Unicode;
 using System.Threading.Tasks;
 
 namespace LL.FirstCore
@@ -143,6 +145,7 @@ namespace LL.FirstCore
             });
             services.AddScoped<BaseDbContext>();
             #endregion
+
             //注入类似于HttpContext的上下文
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtProvider, JwtProvider>();
@@ -153,6 +156,13 @@ namespace LL.FirstCore
             //下面写法将配置信息以对象形式来表达，并以单例方式注册到服务容器中
             services.AddOptions().Configure<string>(Configuration.GetSection("AllowedHosts"));
             services.AddSingleton<ILogFormat, ContentFormat>();
+
+            #region 设置编码格式
+            //services.Configure<WebEncoderOptions>(options =>
+            //{
+            //    options.TextEncoderSettings = new System.Text.Encodings.Web.TextEncoderSettings(UnicodeRanges.All);
+            //});
+            #endregion
         }
 
         // 注意在Program.CreateHostBuilder，添加Autofac服务工厂(3.0语法)

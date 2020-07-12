@@ -5,6 +5,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Migrations\20200712020832_initlogs.cs" />
+    <Compile Remove="Migrations\20200712020832_initlogs.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\LL.FirstCore.Common\LL.FirstCore.Common.csproj" />
     <ProjectReference Include="..\LL.FirstCore.IRepository\LL.FirstCore.IRepository.csproj" />
   </ItemGroup>

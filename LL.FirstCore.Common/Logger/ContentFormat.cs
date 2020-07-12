@@ -72,7 +72,7 @@ namespace LL.FirstCore.Common.Logger
         /// </summary>
         protected void Line10(StringBuilder result, LogContent content, ref int line)
         {
-            if (content.Content.Length == 0)
+            if (content.Content == null || content.Content.Length == 0)
                 return;
             AppendLine(result, content, (r, c) =>
             {
@@ -86,7 +86,7 @@ namespace LL.FirstCore.Common.Logger
         /// </summary>
         protected void Line11(StringBuilder result, LogContent content, ref int line)
         {
-            if (content.Sql.Length == 0)
+            if (content.Sql == null || content.Sql.Length == 0)
                 return;
             AppendLine(result, content, (r, c) =>
             {
@@ -100,7 +100,7 @@ namespace LL.FirstCore.Common.Logger
         /// </summary>
         protected void Line12(StringBuilder result, LogContent content, ref int line)
         {
-            if (content.SqlParams.Length == 0)
+            if (content.SqlParams == null || content.SqlParams.Length == 0)
                 return;
             AppendLine(result, content, (r, c) =>
             {

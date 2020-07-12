@@ -15,6 +15,7 @@ namespace LL.FirstCore.Repository.Context
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<BaseUserInfo> BaseUserInfos { get; set; }
+        public DbSet<LogEntity> Logs { get; set; }
 
         /// <summary>
         /// 日志工厂
@@ -34,6 +35,7 @@ namespace LL.FirstCore.Repository.Context
             //添加是否开启ef日志的开关
             options.EnableSensitiveDataLogging();
             options.EnableDetailedErrors();
+            //注意:因为开启了ef执行日志，所以要注意Nlog日志记录时各参数的空判断
             options.UseLoggerFactory(LoggerFactory);
         }
     }
