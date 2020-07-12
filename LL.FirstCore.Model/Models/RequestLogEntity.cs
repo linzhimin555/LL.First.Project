@@ -32,12 +32,16 @@ namespace LL.FirstCore.Model.Models
         /// </summary>
         public string Url { get; set; }
         /// <summary>
+        /// 请求参数信息
+        /// </summary>
+        public string RequestParamters { get; set; }
+        /// <summary>
         /// 请求时间
         /// </summary>
         public DateTime? ExecutedTime { get; set; }
         /// <summary>
-        /// 请求参数信息
+        /// 执行时间
         /// </summary>
-        public string RequestParamters { get; set; }
+        public string ElaspedTime { get; set; }
     }
 }

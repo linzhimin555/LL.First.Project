@@ -50,22 +50,21 @@ namespace LL.FirstCore.Controllers.v1
         /// <summary>
         ///  登陆 获取token
         /// </summary>
-        /// <param name="userName"></param>
-        /// <param name="Password"></param>
+        /// <param name="user">用户信息</param>
         /// <returns></returns>
         [HttpPost("Login")]
-        public async Task<IActionResult> Login(string userName ,string Password)
+        public async Task<IActionResult> Login([FromBody] UserDto user)
         {
             //var result = await _userService.UserLoginAsync(userLogin.UserName, userLogin.Password);
             //if (result.success)
             //{
-                var token = _jwtProvider.CreateJwtToken(new TokenModel { Uid ="123" , UserName = userName });
-                //return new JsonResult("");
+            var token = _jwtProvider.CreateJwtToken(new TokenModel { Uid = "123", UserName = user.UserName });
+            //return new JsonResult("");
             //}
             return new JsonResult("");
         }
 
-      
+
         /// <summary>
         /// 这是个测试
         /// </summary>
@@ -129,6 +128,15 @@ namespace LL.FirstCore.Controllers.v1
         public IActionResult UploadTest(IFormFile formFile)
         {
             return Ok("上传文件成功!!!");
+        }
+
+        /// <summary>
+        /// 用户输入实体类
+        /// </summary>
+        public class UserDto
+        {
+            public string UserName { get; set; }
+            public string Password { get; set; }
         }
     }
 }

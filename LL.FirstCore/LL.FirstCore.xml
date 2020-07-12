@@ -76,12 +76,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Login(System.String,System.String)">
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Login(LL.FirstCore.Controllers.v1.ValuesController.UserDto)">
             <summary>
              登陆 获取token
             </summary>
-            <param name="userName"></param>
-            <param name="Password"></param>
+            <param name="user">用户信息</param>
             <returns></returns>
         </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.GetToken">
@@ -109,6 +108,11 @@
             </summary>
             <param name="formFile"></param>
             <returns></returns>
+        </member>
+        <member name="T:LL.FirstCore.Controllers.v1.ValuesController.UserDto">
+            <summary>
+            用户输入实体类
+            </summary>
         </member>
         <member name="M:LL.FirstCore.Controllers.v2.ValuesController.Get">
             <summary>
@@ -168,7 +172,7 @@
             请求委托
             </summary>
         </member>
-        <member name="M:LL.FirstCore.Middleware.RequestLogMilddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,System.IServiceProvider)">
+        <member name="M:LL.FirstCore.Middleware.RequestLogMilddleware.#ctor(Microsoft.AspNetCore.Http.RequestDelegate,System.IServiceProvider,Microsoft.Extensions.Logging.ILogger{LL.FirstCore.Middleware.RequestLogMilddleware})">
             <summary>
             
             </summary>
@@ -181,6 +185,12 @@
             </summary>
             <param name="context"></param>
             <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Middleware.RequestLogMilddleware.ResponseDataLog(System.IO.MemoryStream)">
+            <summary>
+            返回结果输出到控制台
+            </summary>
+            <param name="stream"></param>
         </member>
         <member name="F:LL.FirstCore.Startup.provider">
             <summary>
