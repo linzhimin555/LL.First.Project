@@ -15,7 +15,7 @@ namespace LL.FirstCore.Repository.Context
         public DbSet<Blog> Blogs { get; set; }
         public DbSet<Post> Posts { get; set; }
         public DbSet<BaseUserInfo> BaseUserInfos { get; set; }
-        public DbSet<LogEntity> Logs { get; set; }
+        public DbSet<RequestLogEntity> RequestLogs { get; set; }
 
         /// <summary>
         /// 日志工厂

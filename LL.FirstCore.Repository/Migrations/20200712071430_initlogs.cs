@@ -8,7 +8,7 @@ namespace LL.FirstCore.Repository.Migrations
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
-                name: "Logs",
+                name: "RequestLog",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -23,14 +23,14 @@ namespace LL.FirstCore.Repository.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Logs", x => x.Id);
+                    table.PrimaryKey("PK_RequestLog", x => x.Id);
                 });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "Logs");
+                name: "RequestLog");
         }
     }
 }

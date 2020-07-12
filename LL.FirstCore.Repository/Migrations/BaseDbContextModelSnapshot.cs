@@ -84,7 +84,7 @@ namespace LL.FirstCore.Repository.Migrations
                     b.ToTable("BaseUserInfo");
                 });
 
-            modelBuilder.Entity("LL.FirstCore.Model.Models.LogEntity", b =>
+            modelBuilder.Entity("LL.FirstCore.Model.Models.RequestLogEntity", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -114,7 +114,7 @@ namespace LL.FirstCore.Repository.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Logs");
+                    b.ToTable("RequestLog");
                 });
 
             modelBuilder.Entity("LL.FirstCore.Model.Post", b =>

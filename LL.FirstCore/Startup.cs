@@ -3,6 +3,7 @@ using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
 using LL.FirstCore.Common.Logger;
 using LL.FirstCore.Extensions;
+using LL.FirstCore.Middleware;
 using LL.FirstCore.Repository.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
@@ -122,7 +123,7 @@ namespace LL.FirstCore
                 options.RouteBasePath = "/profiler";
                 //（可选）控制存储
                 //（在MemoryCacheStorage中默认为30分钟）
-                (options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(60);
+                (options.Storage as MemoryCacheStorage).CacheDuration = TimeSpan.FromMinutes(30);
                 // (Optional) Control which SQL formatter to use, InlineFormatter is the default
                 options.SqlFormatter = new StackExchange.Profiling.SqlFormatters.InlineFormatter();
                 // 设定弹出窗口的位置是左下角
@@ -192,6 +193,9 @@ namespace LL.FirstCore
                 option.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("LL.FirstCore.index.html");
             });
             #endregion
+
+            //请求日志中间件
+            app.UseRequestLog();
 
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
             // CORS跨域

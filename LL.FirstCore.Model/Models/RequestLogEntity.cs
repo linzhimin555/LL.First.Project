@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace LL.FirstCore.Model.Models
@@ -7,7 +8,8 @@ namespace LL.FirstCore.Model.Models
     /// <summary>
     /// Http请求日志记录实体
     /// </summary>
-    public class LogEntity : BaseEntity
+    [Table("RequestLog")]
+    public class RequestLogEntity : BaseEntity
     {
         /// <summary>
         /// 追踪编号
