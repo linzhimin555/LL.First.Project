@@ -209,6 +209,17 @@ namespace LL.FirstCore.Repository.Base
             Table.UpdateRange(entities);
         }
 
+        /// <summary>
+        /// 指定列的数据更新
+        /// 知识点:在实体上使用Attach方法时，其状态将设置为Unchanged
+        /// Detached：对象存在，但未由对象服务跟踪。在创建实体之后、但将其添加到对象上下文之前，该实体处于此状态；
+        /// Unchanged：自对象加载到上下文中后，或自上次调用 SaveChanges() 方法后，此对象尚未经过修改；
+        /// Added：上下文正在跟踪该实体，但是该实体尚不存在于数据库中；
+        /// Deleted：实体正在由上下文跟踪，并存在于数据库中。它有被标记为要从数据库中删除。
+        /// Modified：实体正在由上下文跟踪，并存在于数据库中。它的部分或全部属性值已被修改。
+        /// <param name="model"></param>
+        /// <param name="updateColumns"></param>
+        /// <returns></returns>
         public virtual int Update(TEntity model, params string[] updateColumns)
         {
             if (updateColumns != null && updateColumns.Length > 0)

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net.Http;
+using System.Text.Json;
 using System.Threading.Tasks;
 using LL.FirstCore.Common.Jwt;
 using Microsoft.AspNetCore.Authorization;
@@ -20,16 +22,18 @@ namespace LL.FirstCore.Controllers.v1
         private readonly ILogger<ValuesController> _logger;
 
         private readonly IJwtProvider _jwtProvider;
+        private readonly IHttpClientFactory _clientFactory;
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="jwtProvider"></param>
-        public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider)
+        public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider, IHttpClientFactory clientFactory)
         {
             _logger = logger;
             _jwtProvider = jwtProvider;
+            _clientFactory = clientFactory;
         }
 
         /// <summary>
@@ -100,12 +104,6 @@ namespace LL.FirstCore.Controllers.v1
                 Console.WriteLine(e);
                 throw;
             }
-            //var tm = new TokenModelJwt
-            //{
-            //    Uid = (jwtToken.Id).ObjToInt(),
-            //    Role = role != null ? role.ObjToString() : "",
-            //};
-            //return tm;
         }
 
         /// <summary>
@@ -131,6 +129,27 @@ namespace LL.FirstCore.Controllers.v1
         }
 
         /// <summary>
+        /// 测试http请求方法
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("TestHttpMethod")]
+        public async Task<IActionResult> TestHttpMethod()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://www.tzaqwl.com:5001/api/Topic?pageIndex=1&pageSize=10");
+            var client = _clientFactory.CreateClient();
+            var response = await client.SendAsync(request);
+            if (response.IsSuccessStatusCode)
+            {
+                var responseStream = await response.Content.ReadAsStreamAsync();
+                responseStream.Position = 0;
+                var result = await JsonSerializer.DeserializeAsync<Rootobject>(responseStream);
+                return Ok(result);
+            }
+
+            return BadRequest();
+        }
+
+        /// <summary>
         /// 用户输入实体类
         /// </summary>
         public class UserDto
@@ -138,5 +157,44 @@ namespace LL.FirstCore.Controllers.v1
             public string UserName { get; set; }
             public string Password { get; set; }
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Rootobject
+        {
+            public bool success { get; set; }
+            public string msg { get; set; }
+            public Response response { get; set; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Response
+        {
+            public int page { get; set; }
+            public int pageCount { get; set; }
+            public int dataCount { get; set; }
+            public int PageSize { get; set; }
+            public Datum[] data { get; set; }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public class Datum
+        {
+            public int Id { get; set; }
+            public string Title { get; set; }
+            public string Content { get; set; }
+            public string Img { get; set; }
+            public int ReadNum { get; set; }
+            public bool IsDel { get; set; }
+            public DateTime CreateTime { get; set; }
+            public int OrderId { get; set; }
+        }
+
+
     }
 }

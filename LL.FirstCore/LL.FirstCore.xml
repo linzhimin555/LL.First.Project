@@ -57,7 +57,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.#ctor(Microsoft.Extensions.Logging.ILogger{LL.FirstCore.Controllers.v1.ValuesController},LL.FirstCore.Common.Jwt.IJwtProvider)">
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.#ctor(Microsoft.Extensions.Logging.ILogger{LL.FirstCore.Controllers.v1.ValuesController},LL.FirstCore.Common.Jwt.IJwtProvider,System.Net.Http.IHttpClientFactory)">
             <summary>
             
             </summary>
@@ -109,9 +109,30 @@
             <param name="formFile"></param>
             <returns></returns>
         </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.TestHttpMethod">
+            <summary>
+            测试http请求方法
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:LL.FirstCore.Controllers.v1.ValuesController.UserDto">
             <summary>
             用户输入实体类
+            </summary>
+        </member>
+        <member name="T:LL.FirstCore.Controllers.v1.ValuesController.Rootobject">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:LL.FirstCore.Controllers.v1.ValuesController.Response">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="T:LL.FirstCore.Controllers.v1.ValuesController.Datum">
+            <summary>
+            
             </summary>
         </member>
         <member name="M:LL.FirstCore.Controllers.v2.ValuesController.Get">

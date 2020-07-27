@@ -147,6 +147,10 @@ namespace LL.FirstCore
             services.AddScoped<BaseDbContext>();
             #endregion
 
+            #region 添加HttpClient请求
+            services.AddHttpClient();
+            #endregion
+
             //注入类似于HttpContext的上下文
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddSingleton<IJwtProvider, JwtProvider>();
