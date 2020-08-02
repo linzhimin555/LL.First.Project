@@ -108,11 +108,11 @@ namespace LL.FirstCore
             #endregion
 
             #region 配置跨域请求
-            services.AddCors(options =>
-            {
-                var origins = Configuration.GetSection("AllowOrigins").Get<string[]>();
-                options.AddDefaultPolicy(builder => builder.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
-            });
+            //services.AddCors(options =>
+            //{
+            //    var origins = Configuration.GetSection("AllowOrigins").Get<string[]>();
+            //    options.AddDefaultPolicy(builder => builder.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+            //});
             #endregion
 
             #region 添加miniProfile(https://miniprofiler.com/dotnet/AspDotNetCore)
@@ -203,7 +203,7 @@ namespace LL.FirstCore
 
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
             // CORS跨域
-            app.UseCors();
+            //app.UseCors();
             // 跳转https
             //app.UseHttpsRedirection();
             // 使用静态文件

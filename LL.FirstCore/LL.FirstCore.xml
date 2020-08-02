@@ -176,6 +176,32 @@
             swagger服务注册
             </summary>
         </member>
+        <member name="T:LL.FirstCore.HttpHelper.CustomClient">
+            <summary>
+            httpclient扩展类
+            </summary>
+        </member>
+        <member name="M:LL.FirstCore.HttpHelper.CustomClient.PostData``1(System.Net.Http.HttpClient,System.String,System.Object,System.String,System.String)">
+            <summary>
+            
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="_client"></param>
+            <param name="actionUrl"></param>
+            <param name="stringContent"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.HttpHelper.CustomClient.GetData(System.Net.Http.HttpClient,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>
+            Get请求
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="client"></param>
+            <param name="url"></param>
+            <param name="dic"></param>
+            <param name="bearerToken"></param>
+            <returns></returns>
+        </member>
         <member name="T:LL.FirstCore.Middleware.MiddlewareHelpers">
             <summary>
             中间件注册帮助类

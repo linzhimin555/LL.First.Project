@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
 using LL.FirstCore.Common.Jwt;
+using LL.FirstCore.HttpHelper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -135,15 +136,21 @@ namespace LL.FirstCore.Controllers.v1
         [HttpGet("TestHttpMethod")]
         public async Task<IActionResult> TestHttpMethod()
         {
-            var request = new HttpRequestMessage(HttpMethod.Get, "http://www.tzaqwl.com:5001/api/Topic?pageIndex=1&pageSize=10");
-            var client = _clientFactory.CreateClient();
-            var response = await client.SendAsync(request);
-            if (response.IsSuccessStatusCode)
+            //var client = _clientFactory.CreateClient();
+            //var parameters = new Dictionary<string, string>() { ["pageIndex"] = "1", ["pageSize"] = "10" };
+            //var result = await CustomClient.GetData(client, "http://www.tzaqwl.com:5001/api/Story", parameters);
+            //return Ok(result);
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://www.tzaqwl.com:5001/api/Story?pageIndex=1&pageSize=10");
+            using (var client = _clientFactory.CreateClient())
             {
-                var responseStream = await response.Content.ReadAsStreamAsync();
-                responseStream.Position = 0;
-                var result = await JsonSerializer.DeserializeAsync<Rootobject>(responseStream);
-                return Ok(result);
+                var response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var responseStream = await response.Content.ReadAsStreamAsync();
+                    responseStream.Position = 0;
+                    var result = await JsonSerializer.DeserializeAsync<Rootobject>(responseStream);
+                    return Ok(result);
+                }
             }
 
             return BadRequest();
