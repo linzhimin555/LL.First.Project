@@ -210,7 +210,7 @@ namespace LL.FirstCore.Repository.Base
         }
 
         /// <summary>
-        /// 指定列的数据更新
+        /// 指定列的数据更新(局部更新)
         /// 知识点:在实体上使用Attach方法时，其状态将设置为Unchanged
         /// Detached：对象存在，但未由对象服务跟踪。在创建实体之后、但将其添加到对象上下文之前，该实体处于此状态；
         /// Unchanged：自对象加载到上下文中后，或自上次调用 SaveChanges() 方法后，此对象尚未经过修改；
@@ -222,18 +222,23 @@ namespace LL.FirstCore.Repository.Base
         /// <returns></returns>
         public virtual int Update(TEntity model, params string[] updateColumns)
         {
+            if (model == null)
+                return 0;
+
+            if (_dbContext.Entry(model).State == EntityState.Added || _dbContext.Entry(model).State == EntityState.Detached)
+                Table.Attach(model);
+            var entry = _dbContext.Entry(model);
             if (updateColumns != null && updateColumns.Length > 0)
             {
-                if (_dbContext.Entry(model).State == EntityState.Added || _dbContext.Entry(model).State == EntityState.Detached)
-                    Table.Attach(model);
                 foreach (var propertyName in updateColumns)
                 {
-                    _dbContext.Entry(model).Property(propertyName).IsModified = true;
+                    entry.Property(propertyName).IsModified = true;
                 }
             }
             else
             {
-                _dbContext.Entry(model).State = EntityState.Modified;
+                //全字段更新
+                entry.State = EntityState.Modified;
             }
 
             return SaveChanges();
