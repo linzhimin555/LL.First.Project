@@ -16,6 +16,10 @@ using System.Diagnostics;
 
 namespace LL.FirstCore.Middleware
 {
+    /// <summary>
+    /// 中间件
+    /// 记录请求和响应数据
+    /// </summary>
     public class RequestLogMilddleware
     {
         /// <summary>
@@ -31,6 +35,7 @@ namespace LL.FirstCore.Middleware
         /// </summary>
         /// <param name="next"></param>
         /// <param name="serviceProvider"></param>
+        /// <param name="logger"></param>
         public RequestLogMilddleware(RequestDelegate next, IServiceProvider serviceProvider, ILogger<RequestLogMilddleware> logger)
         {
             _next = next;
