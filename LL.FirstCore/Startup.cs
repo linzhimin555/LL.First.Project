@@ -197,7 +197,8 @@ namespace LL.FirstCore
                 option.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("LL.FirstCore.index.html");
             });
             #endregion
-
+            //获取当前运行的进程名称
+            var process = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             //请求日志中间件
             app.UseRequestLog();
 

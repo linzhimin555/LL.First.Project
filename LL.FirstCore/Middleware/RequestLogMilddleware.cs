@@ -53,8 +53,8 @@ namespace LL.FirstCore.Middleware
                 ExecutedTime = DateTime.Now,
             };
             //注意：文件上传接口可能需要单独处理
-            //miniprofiler一直请求接口结果,所以此处过滤该请求信息
-            if (entity.Url != "/profiler/results")
+            //miniprofiler一直请求接口结果,所以此处过滤该请求信息(只保留正常的接口请求信息)
+            if (entity.Url.Contains("api"))
             {
                 switch (request.Method.ToLower())
                 {

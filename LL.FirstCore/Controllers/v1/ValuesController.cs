@@ -30,6 +30,7 @@ namespace LL.FirstCore.Controllers.v1
         /// </summary>
         /// <param name="logger"></param>
         /// <param name="jwtProvider"></param>
+        /// <param name="clientFactory"></param>
         public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider, IHttpClientFactory clientFactory)
         {
             _logger = logger;
