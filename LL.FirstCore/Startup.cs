@@ -3,6 +3,7 @@ using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
 using LL.FirstCore.Common.Logger;
 using LL.FirstCore.Extensions;
+using LL.FirstCore.Filter.GlobalConvention;
 using LL.FirstCore.Middleware;
 using LL.FirstCore.Repository.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -46,9 +47,12 @@ namespace LL.FirstCore
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers(option =>
+            {
+                option.UseCentralRoutePrefix(new RouteAttribute("api"));
+            });
             #region using Api version(eg:参考链接:https://www.cnblogs.com/jjg0519/p/7253594.html,https://www.quarkbook.com/?p=793)
-            //动态整合版:https://www.cnblogs.com/jixiaosa/p/10817143.html
+            //动态整合版:https://blog.csdn.net/ma524654165/article/details/77880106
 
             services.AddApiVersioning(option =>
             {
@@ -195,6 +199,7 @@ namespace LL.FirstCore
                 option.RoutePrefix = string.Empty;
                 // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法,记得这个字符串的写法,记得这个字符串的写法：程序集名.index.html
                 option.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("LL.FirstCore.index.html");
+                option.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);//折叠Api
             });
             #endregion
             //获取当前运行的进程名称

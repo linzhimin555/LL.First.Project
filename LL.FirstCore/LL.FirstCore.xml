@@ -63,6 +63,7 @@
             </summary>
             <param name="logger"></param>
             <param name="jwtProvider"></param>
+            <param name="clientFactory"></param>
         </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Get">
             <summary>
@@ -176,24 +177,47 @@
             swagger服务注册
             </summary>
         </member>
+        <member name="T:LL.FirstCore.Filter.GlobalConvention.GlobalRoutePrefixConvention">
+            <summary>
+            全局路由前缀公约
+            </summary>
+        </member>
+        <member name="F:LL.FirstCore.Filter.GlobalConvention.GlobalRoutePrefixConvention._centralPrefix">
+            <summary>
+            定义一个路由前缀变量
+            </summary>
+        </member>
+        <member name="M:LL.FirstCore.Filter.GlobalConvention.GlobalRoutePrefixConvention.#ctor(Microsoft.AspNetCore.Mvc.Routing.IRouteTemplateProvider)">
+            <summary>
+            调用时传入指定的路由前缀
+            </summary>
+            <param name="routeTemplateProvider"></param>
+        </member>
+        <member name="M:LL.FirstCore.Filter.GlobalConvention.MvcOptionsExtensions.UseCentralRoutePrefix(Microsoft.AspNetCore.Mvc.MvcOptions,Microsoft.AspNetCore.Mvc.Routing.IRouteTemplateProvider)">
+            <summary>
+            扩展方法
+            </summary>
+            <param name="opts"></param>
+            <param name="routeAttribute"></param>
+        </member>
         <member name="T:LL.FirstCore.HttpHelper.CustomClient">
             <summary>
             httpclient扩展类
             </summary>
         </member>
-        <member name="M:LL.FirstCore.HttpHelper.CustomClient.PostData``1(System.Net.Http.HttpClient,System.String,System.Object,System.String,System.String)">
-            <summary>
-            
-            </summary>
-            <typeparam name="T"></typeparam>
-            <param name="_client"></param>
-            <param name="actionUrl"></param>
-            <param name="stringContent"></param>
-            <returns></returns>
-        </member>
         <member name="M:LL.FirstCore.HttpHelper.CustomClient.GetData(System.Net.Http.HttpClient,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
             <summary>
             Get请求
+            </summary>
+            <param name="client"></param>
+            <param name="url">请求地址</param>
+            <param name="dic">请求参数</param>
+            <param name="bearerToken"></param>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.HttpHelper.CustomClient.PostData``1(System.Net.Http.HttpClient,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+            <summary>
+            Post请求
             </summary>
             <typeparam name="T"></typeparam>
             <param name="client"></param>
@@ -201,6 +225,26 @@
             <param name="dic"></param>
             <param name="bearerToken"></param>
             <returns></returns>
+        </member>
+        <member name="P:LL.FirstCore.HttpHelper.CustomClient.ResponseMessage`1.IsSuccess">
+            <summary>
+            请求是否成功
+            </summary>
+        </member>
+        <member name="P:LL.FirstCore.HttpHelper.CustomClient.ResponseMessage`1.HttpStatus">
+            <summary>
+            http请求状态码
+            </summary>
+        </member>
+        <member name="P:LL.FirstCore.HttpHelper.CustomClient.ResponseMessage`1.Msg">
+            <summary>
+            请求结果信息
+            </summary>
+        </member>
+        <member name="P:LL.FirstCore.HttpHelper.CustomClient.ResponseMessage`1.Data">
+            <summary>
+            请求结果数据
+            </summary>
         </member>
         <member name="T:LL.FirstCore.Middleware.MiddlewareHelpers">
             <summary>
@@ -214,6 +258,12 @@
             <param name="app"></param>
             <returns></returns>
         </member>
+        <member name="T:LL.FirstCore.Middleware.RequestLogMilddleware">
+            <summary>
+            中间件
+            记录请求和响应数据
+            </summary>
+        </member>
         <member name="F:LL.FirstCore.Middleware.RequestLogMilddleware._next">
             <summary>
             请求委托
@@ -225,6 +275,7 @@
             </summary>
             <param name="next"></param>
             <param name="serviceProvider"></param>
+            <param name="logger"></param>
         </member>
         <member name="M:LL.FirstCore.Middleware.RequestLogMilddleware.GetClientIP(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
