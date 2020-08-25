@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -100,6 +101,48 @@ namespace LL.FirstCore.HttpHelper
             catch (Exception ex)
             {
                 result.Msg = ex.InnerException.ToString();
+            }
+
+            return result;
+        }
+
+        /// <summary>
+        /// Form-Data表单数据提交
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="clientFactory"></param>
+        /// <returns></returns>
+        public async static Task<ResponseMessage<T>> PostFormData<T>(IHttpClientFactory clientFactory)
+        {
+            var result = new ResponseMessage<T>();
+            Stream imageStream;
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://dsj.shui00.com/shuiliju/service/file.jsp?fileid=116104");
+            using (var client = clientFactory.CreateClient())
+            {
+                var response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    imageStream = await response.Content.ReadAsStreamAsync();
+                    imageStream.Position = 0;
+                    var postContent = new MultipartFormDataContent();
+                    string boundary = string.Format("--{0}", DateTime.Now.Ticks.ToString("x"));
+                    postContent.Headers.Add("ContentType", $"multipart/form-data, boundary={boundary}");
+                    var requestUri = "https://web.dcyun.com:48119/zjsdz-api/api/file/upload/syn";
+                    //一定要带上文件名称，不然就是500
+                    postContent.Add(new StreamContent(imageStream, (int)imageStream.Length), "file", "test.png");
+                    postContent.Add(new StringContent("taiZhouShi"), string.Format("\"{0}\"", "userCode"));
+                    postContent.Add(new StringContent("2e049b9c258d7f3edb53cf4d997bf93d"), string.Format("\"{0}\"", "passWord"));
+                    using (var fileClient = clientFactory.CreateClient())
+                    {
+                        var uploadResponse = await fileClient.PostAsync(requestUri, postContent);
+                        result.HttpStatus = uploadResponse.StatusCode;
+                        if (uploadResponse.IsSuccessStatusCode)
+                        {
+                            var responseStr = await uploadResponse.Content.ReadAsStringAsync();
+                            result.Data = System.Text.Json.JsonSerializer.Deserialize<T>(responseStr);
+                        }
+                    }
+                }
             }
 
             return result;
