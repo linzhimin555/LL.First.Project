@@ -232,6 +232,14 @@
             <param name="bearerToken"></param>
             <returns></returns>
         </member>
+        <member name="M:LL.FirstCore.HttpHelper.CustomClient.PostFormData``1(System.Net.Http.IHttpClientFactory)">
+            <summary>
+            Form-Data表单数据提交
+            </summary>
+            <typeparam name="T"></typeparam>
+            <param name="clientFactory"></param>
+            <returns></returns>
+        </member>
         <member name="P:LL.FirstCore.HttpHelper.CustomClient.ResponseMessage`1.IsSuccess">
             <summary>
             请求是否成功

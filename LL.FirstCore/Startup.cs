@@ -49,6 +49,7 @@ namespace LL.FirstCore
         {
             services.AddControllers(option =>
             {
+                //全局路由前缀公约
                 option.UseCentralRoutePrefix(new RouteAttribute("api"));
             });
             #region using Api version(eg:参考链接:https://www.cnblogs.com/jjg0519/p/7253594.html,https://www.quarkbook.com/?p=793)
@@ -153,6 +154,26 @@ namespace LL.FirstCore
 
             #region 添加HttpClient请求
             services.AddHttpClient();
+            #endregion
+
+            #region 添加统一模型验证,无需实现IActionFilter
+            services.Configure<ApiBehaviorOptions>(options =>
+            {
+                options.SuppressModelStateInvalidFilter = true; // 使用自定义模型验证
+                options.InvalidModelStateResponseFactory = (context) =>
+                {
+                    StringBuilder errorMessage = new StringBuilder();
+                    foreach (var item in context.ModelState.Values)
+                    {
+                        foreach (var error in item.Errors)
+                        {
+                            errorMessage.Append(error.ErrorMessage + "|");
+                        }
+                    }
+
+                    return new JsonResult(errorMessage);
+                };
+            });
             #endregion
 
             //注入类似于HttpContext的上下文
