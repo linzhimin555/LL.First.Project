@@ -22,3 +22,8 @@
 >
 > 参考博文：https://www.cnblogs.com/nimorl/p/12570823.html，https://www.cnblogs.com/smartsmile/p/11721544.html
 
+## HealthCheck健康检查
+
+> 官方介绍：https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/tree/netcore-3.0
+> 
+> <font  color='red'> 注意点:HealthyUI页面报表结果需要引用HealthChecks.UI.Client包</font>

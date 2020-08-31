@@ -1,4 +1,5 @@
 using Autofac;
+using HealthChecks.UI.Client;
 using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
 using LL.FirstCore.Common.Logger;
@@ -8,6 +9,7 @@ using LL.FirstCore.Middleware;
 using LL.FirstCore.Repository.Context;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -15,14 +17,17 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json.Linq;
 using StackExchange.Profiling.Storage;
 using System;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Text.Unicode;
@@ -193,6 +198,22 @@ namespace LL.FirstCore
             //    options.TextEncoderSettings = new System.Text.Encodings.Web.TextEncoderSettings(UnicodeRanges.All);
             //});
             #endregion
+
+            #region 添加健康检查
+            //添加对数据库的检测
+            services.AddHealthChecks().AddSqlServer(
+                 Configuration.GetConnectionString("DefaultConnection"),
+                 healthQuery: "SELECT 1;",
+                 name: "sql server",
+                 failureStatus: HealthStatus.Degraded,
+                 tags: new[] { "db", "sql", "sqlserver" }
+                );
+            //添加AspNetCore.HealthChecks.UI以及HealthChecks.UI.InMemory.Storage包
+            services.AddHealthChecksUI(setupSettings: setup =>
+            {
+                setup.AddHealthCheckEndpoint("sqlserver", "/health");
+            }).AddInMemoryStorage();
+            #endregion
         }
 
         // 注意在Program.CreateHostBuilder，添加Autofac服务工厂(3.0语法)
@@ -245,6 +266,13 @@ namespace LL.FirstCore
             app.UseMiniProfiler();
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
+                //访问"/healthchecks-ui"即可看到可视化页面
+                endpoints.MapHealthChecksUI();
                 endpoints.MapControllers();
             });
         }
@@ -252,6 +280,24 @@ namespace LL.FirstCore
         private ServiceProvider BuildServiceProvider(IServiceCollection services)
         {
             return services.BuildServiceProvider();
+        }
+
+        //指定返回格式
+        private static Task WriteResponse(HttpContext context, HealthReport result)
+        {
+            context.Response.ContentType = "application/json";
+
+            var json = new JObject(
+                new JProperty("status", result.Status.ToString()),
+                new JProperty("results", new JObject(result.Entries.Select(pair =>
+                    new JProperty(pair.Key, new JObject(
+                        new JProperty("status", pair.Value.Status.ToString()),
+                        new JProperty("description", pair.Value.Description),
+                        new JProperty("data", new JObject(pair.Value.Data.Select(
+                            p => new JProperty(p.Key, p.Value))))))))));
+
+            return context.Response.WriteAsync(
+                json.ToString());
         }
     }
 }
