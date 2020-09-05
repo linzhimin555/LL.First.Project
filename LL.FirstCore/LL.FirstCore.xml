@@ -118,7 +118,13 @@
         </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.TestFileHttpMethod">
             <summary>
-            
+            测试通过HttpClient上传文件
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.MergeImageToGif">
+            <summary>
+            图片合并到gif
             </summary>
             <returns></returns>
         </member>

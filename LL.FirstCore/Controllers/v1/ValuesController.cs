@@ -12,6 +12,11 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using SixLabors.ImageSharp.PixelFormats;
+using System.Drawing;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Processing;
+using LL.FirstCore.Common.Images;
 
 namespace LL.FirstCore.Controllers.v1
 {
@@ -159,7 +164,7 @@ namespace LL.FirstCore.Controllers.v1
         }
 
         /// <summary>
-        /// 
+        /// 测试通过HttpClient上传文件
         /// </summary>
         /// <returns></returns>
         [HttpGet("TestFileHttpMethod")]
@@ -196,6 +201,25 @@ namespace LL.FirstCore.Controllers.v1
             }
 
             return Ok("保存失败");
+        }
+
+        /// <summary>
+        /// 图片合并到gif
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("MergeImageToGif")]
+        public IActionResult MergeImageToGif()
+        {
+            List<(string path, int duration)> images = new List<(string path, int duration)>()
+            {
+                (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_13.png",100),
+                (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_17.png",100),
+                (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_19.png",100),
+                (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_25.png",100)
+            };
+
+            ImageHelper.RegularImageToGif(images, @"C:\Users\Administrator\Desktop\mergeImage\result1.gif");
+            return Ok("合并成功");
         }
 
         /// <summary>
