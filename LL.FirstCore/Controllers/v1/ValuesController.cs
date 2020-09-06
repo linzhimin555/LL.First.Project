@@ -17,6 +17,9 @@ using System.Drawing;
 using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Processing;
 using LL.FirstCore.Common.Images;
+using AutoMapper;
+using LL.FirstCore.Model.Dto;
+using LL.FirstCore.Model.Models;
 
 namespace LL.FirstCore.Controllers.v1
 {
@@ -30,6 +33,7 @@ namespace LL.FirstCore.Controllers.v1
 
         private readonly IJwtProvider _jwtProvider;
         private readonly IHttpClientFactory _clientFactory;
+        private readonly IMapper _mapper;
 
         /// <summary>
         /// 
@@ -37,11 +41,12 @@ namespace LL.FirstCore.Controllers.v1
         /// <param name="logger"></param>
         /// <param name="jwtProvider"></param>
         /// <param name="clientFactory"></param>
-        public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider, IHttpClientFactory clientFactory)
+        public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider, IHttpClientFactory clientFactory, IMapper mapper)
         {
             _logger = logger;
             _jwtProvider = jwtProvider;
             _clientFactory = clientFactory;
+            _mapper = mapper;
         }
 
         /// <summary>
@@ -220,6 +225,19 @@ namespace LL.FirstCore.Controllers.v1
 
             ImageHelper.RegularImageToGif(images, @"C:\Users\Administrator\Desktop\mergeImage\result1.gif");
             return Ok("合并成功");
+        }
+
+        /// <summary>
+        /// 测试Automapper
+        /// </summary>
+        /// <param name="userInfo"></param>
+        /// <returns></returns>
+        [HttpPost("UpdateUserInfo")]
+        public IActionResult UpdateUserInfo([FromBody] UserInfoDto userInfo)
+        {
+            var users = _mapper.Map<BaseUserInfo>(userInfo);
+
+            return Ok(users);
         }
 
         /// <summary>

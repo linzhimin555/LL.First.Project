@@ -57,7 +57,7 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.#ctor(Microsoft.Extensions.Logging.ILogger{LL.FirstCore.Controllers.v1.ValuesController},LL.FirstCore.Common.Jwt.IJwtProvider,System.Net.Http.IHttpClientFactory)">
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.#ctor(Microsoft.Extensions.Logging.ILogger{LL.FirstCore.Controllers.v1.ValuesController},LL.FirstCore.Common.Jwt.IJwtProvider,System.Net.Http.IHttpClientFactory,AutoMapper.IMapper)">
             <summary>
             
             </summary>
@@ -126,6 +126,13 @@
             <summary>
             图片合并到gif
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.UpdateUserInfo(LL.FirstCore.Model.Dto.UserInfoDto)">
+            <summary>
+            测试Automapper
+            </summary>
+            <param name="userInfo"></param>
             <returns></returns>
         </member>
         <member name="T:LL.FirstCore.Controllers.v1.ValuesController.UserDto">

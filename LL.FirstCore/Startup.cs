@@ -1,4 +1,5 @@
 using Autofac;
+using AutoMapper;
 using HealthChecks.UI.Client;
 using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
@@ -110,6 +111,7 @@ namespace LL.FirstCore
                     {
                         OnMessageReceived = context =>
                         {
+                            //SignalR采用query传递token信息
                             context.Token = context.Request.Query["access_token"];
                             return Task.CompletedTask;
                         }
@@ -213,6 +215,11 @@ namespace LL.FirstCore
             {
                 setup.AddHealthCheckEndpoint("sqlserver", "/health");
             }).AddInMemoryStorage();
+            #endregion
+
+            #region AutoMapper 自动映射
+            //寻找本程序集中继承Profile类的所有实现
+            services.AddAutoMapper(typeof(Startup));
             #endregion
         }
 

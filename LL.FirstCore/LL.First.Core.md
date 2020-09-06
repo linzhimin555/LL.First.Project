@@ -1,12 +1,12 @@
 # LL.First.Core
 
-.Net Core 官方文档：https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/startup?view=aspnetcore-2.2
+.Net Core 官方文档：https://docs.microsoft.com/zh-cn/aspnet/core/fundamentals/startup?view=aspnetcore-3.1
 
 ## Swagger+ApiVersion进行版本控制
 
 > 参考链接:
 >
-> 1. [版本控制][https://www.talkingdotnet.com/support-multiple-versions-of-asp-net-core-web-api/]
+> 1. [版本控制][https://blog.csdn.net/ma524654165/article/details/77880106]
 > 2. [Swagger+版本控制的使用][https://www.cnblogs.com/jixiaosa/p/10817143.html]
 > 3. [swagger官方文档][https://docs.microsoft.com/zh-cn/aspnet/core/tutorials/getting-started-with-swashbuckle?view=aspnetcore-3.1&tabs=visual-studio]
 
@@ -27,3 +27,7 @@
 > 官方介绍：https://github.com/Xabaril/AspNetCore.Diagnostics.HealthChecks/tree/netcore-3.0
 > 
 > <font  color='red'> 注意点:HealthyUI页面报表结果需要引用HealthChecks.UI.Client包</font>
+
+## AutoMapper
+
+> 官方介绍：https://docs.automapper.org/en/stable/Dependency-injection.html
