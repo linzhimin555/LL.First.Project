@@ -31,6 +31,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Text.Encodings.Web;
 using System.Text.Unicode;
 using System.Threading.Tasks;
 
@@ -58,6 +59,12 @@ namespace LL.FirstCore
                 //全局路由前缀公约
                 option.UseCentralRoutePrefix(new RouteAttribute("api"));
             });
+            //使用System.Text.Json会有中文编码问题
+            //.AddJsonOptions(option =>
+            //{
+            //    //默认设置下中文会被编码
+            //    option.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+            //});
             #region using Api version(eg:参考链接:https://www.cnblogs.com/jjg0519/p/7253594.html,https://www.quarkbook.com/?p=793)
             //动态整合版:https://blog.csdn.net/ma524654165/article/details/77880106
 

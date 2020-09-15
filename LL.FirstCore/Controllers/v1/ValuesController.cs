@@ -20,6 +20,7 @@ using LL.FirstCore.Common.Images;
 using AutoMapper;
 using LL.FirstCore.Model.Dto;
 using LL.FirstCore.Model.Models;
+using Swashbuckle.AspNetCore.Swagger;
 
 namespace LL.FirstCore.Controllers.v1
 {
@@ -28,12 +29,11 @@ namespace LL.FirstCore.Controllers.v1
     [ApiController]
     public class ValuesController : ControllerBase
     {
-
         private readonly ILogger<ValuesController> _logger;
-
         private readonly IJwtProvider _jwtProvider;
         private readonly IHttpClientFactory _clientFactory;
         private readonly IMapper _mapper;
+        private readonly ISwaggerProvider _swaggerProvider;
 
         /// <summary>
         /// 
@@ -41,12 +41,14 @@ namespace LL.FirstCore.Controllers.v1
         /// <param name="logger"></param>
         /// <param name="jwtProvider"></param>
         /// <param name="clientFactory"></param>
-        public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider, IHttpClientFactory clientFactory, IMapper mapper)
+        /// <param name="mapper"></param>
+        public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider, IHttpClientFactory clientFactory, IMapper mapper, ISwaggerProvider swaggerProvider)
         {
             _logger = logger;
             _jwtProvider = jwtProvider;
             _clientFactory = clientFactory;
             _mapper = mapper;
+            _swaggerProvider = swaggerProvider;
         }
 
         /// <summary>
@@ -117,6 +119,25 @@ namespace LL.FirstCore.Controllers.v1
                 Console.WriteLine(e);
                 throw;
             }
+        }
+
+        /// <summary>
+        /// 获取swagger相关信息
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult GetSwaggerInfo()
+        {
+            var swagger = _swaggerProvider.GetSwagger("v1");
+            var compoents = swagger.Components;
+            //所有的标题
+            var tags = swagger.Tags;
+            var sercers = swagger.Servers;
+            var security = swagger.SecurityRequirements;
+            var paths = swagger.Paths;
+            var info = swagger.Info;
+
+            return Ok(paths);
         }
 
         /// <summary>
