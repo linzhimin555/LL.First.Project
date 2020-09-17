@@ -125,7 +125,7 @@ namespace LL.FirstCore.Controllers.v1
         /// 获取swagger相关信息
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("GetSwaggerInfo")]
         public IActionResult GetSwaggerInfo()
         {
             var swagger = _swaggerProvider.GetSwagger("v1");

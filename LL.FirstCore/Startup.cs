@@ -26,6 +26,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Newtonsoft.Json.Linq;
 using StackExchange.Profiling.Storage;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
 using System.Linq;
@@ -255,7 +256,11 @@ namespace LL.FirstCore
                 option.RoutePrefix = string.Empty;
                 // 将swagger首页，设置成我们自定义的页面，记得这个字符串的写法,记得这个字符串的写法,记得这个字符串的写法：程序集名.index.html
                 option.IndexStream = () => GetType().GetTypeInfo().Assembly.GetManifestResourceStream("LL.FirstCore.index.html");
-                option.DocExpansion(Swashbuckle.AspNetCore.SwaggerUI.DocExpansion.List);//折叠Api
+                option.DocExpansion(DocExpansion.List);//折叠Api
+                //关闭页面Scheme展示(不知道两者的区别)
+                option.DefaultModelsExpandDepth(-1);
+                //设置下面这个好像没有效果
+                option.DefaultModelExpandDepth(-1);
             });
             #endregion
             //获取当前运行的进程名称
