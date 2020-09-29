@@ -80,10 +80,10 @@ namespace LL.FirstCore.HttpHelper
                         if (response != null && response.IsSuccessStatusCode)
                         {
                             Type type = typeof(T);
-                            if (typeof(T) == typeof(string))
+                            if (type == typeof(string))
                             {
                                 var responseStr = await response.Content.ReadAsStringAsync();
-                                result.Data = (T)Convert.ChangeType(responseStr, typeof(T));
+                                result.Data = (T)Convert.ChangeType(responseStr, type);
                             }
                             else
                             {

@@ -5,6 +5,7 @@ using LL.FirstCore.Common.Config;
 using LL.FirstCore.Common.Jwt;
 using LL.FirstCore.Common.Logger;
 using LL.FirstCore.Extensions;
+using LL.FirstCore.Filter;
 using LL.FirstCore.Filter.GlobalConvention;
 using LL.FirstCore.Middleware;
 using LL.FirstCore.Repository.Context;
@@ -57,9 +58,10 @@ namespace LL.FirstCore
         {
             services.AddControllers(option =>
             {
+                option.Filters.Add(typeof(GlobalExceptionFilter));
                 //全局路由前缀公约
                 option.UseCentralRoutePrefix(new RouteAttribute("api"));
-            });
+            }).AddControllersAsServices();  //将所有的controller作为service注入
             //使用System.Text.Json会有中文编码问题
             //.AddJsonOptions(option =>
             //{
@@ -122,6 +124,33 @@ namespace LL.FirstCore
                             //SignalR采用query传递token信息
                             context.Token = context.Request.Query["access_token"];
                             return Task.CompletedTask;
+                        },
+                        //认证失败
+                        OnAuthenticationFailed = c =>
+                        {
+                            c.NoResult();
+                            c.Response.StatusCode = 500;
+                            c.Response.ContentType = "text/plain";
+                            c.Response.WriteAsync(c.Exception.ToString()).Wait();
+                            return Task.CompletedTask;
+                        },
+                        //401
+                        OnChallenge = context =>
+                        {
+                            // Skip the default logic.
+                            context.HandleResponse();
+
+                            var payload = new JObject
+                            {
+                                ["error"] = context.Error,
+                                ["error_description"] = context.ErrorDescription,
+                                ["error_uri"] = context.ErrorUri
+                            };
+
+                            context.Response.ContentType = "application/json";
+                            context.Response.StatusCode = 401;
+
+                            return context.Response.WriteAsync(payload.ToString());
                         }
                     };
                 });

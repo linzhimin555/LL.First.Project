@@ -42,7 +42,10 @@ namespace LL.FirstCore.Filter
             string error = string.Empty;
             void ReadException(Exception ex)
             {
-                error += string.Format("{0} | {1} | {2}", ex.Message, ex.StackTrace, ex.InnerException);
+                error += $@"【异常信息】：{context.Exception.Message}<br>【异常类型】：{ex.GetType()}<br>【堆栈调用】:{ex.StackTrace}";
+                error = error.Replace("<br>", "\r\n");
+                error = error.Replace("位置", "<strong style=\"color:red\">位置</strong>");
+                //error += string.Format("{0} | {1} | {2}", ex.Message, ex.StackTrace, ex.InnerException);
                 if (ex.InnerException != null)
                 {
                     ReadException(ex.InnerException);
@@ -60,7 +63,7 @@ namespace LL.FirstCore.Filter
             {
                 result.Content = "抱歉，服务端出错了";
             }
-            
+
             //可以做一些扩展，比如加入短信通知，邮箱通知功能
 
             context.Result = result;

@@ -46,7 +46,7 @@ namespace LL.FirstCore
                 })
                 .ConfigureLogging(logging =>
                 {
-                    logging.ClearProviders();
+                    logging.ClearProviders(); //移除已经注册的其他日志处理程序
                     logging.SetMinimumLevel(Microsoft.Extensions.Logging.LogLevel.Debug);
                 }).UseNLog();
     }
