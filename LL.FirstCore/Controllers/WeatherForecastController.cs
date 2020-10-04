@@ -48,6 +48,8 @@ namespace LL.FirstCore.Controllers
         /// </remarks>
         /// <returns></returns>
         [ApiExplorerSettings(IgnoreApi = false)]
+        //此特性用于标识接口将被弃用，但是目前又可以访问使用
+        [Obsolete]
         [HttpGet]
         public IEnumerable<WeatherForecast> Get()
         {

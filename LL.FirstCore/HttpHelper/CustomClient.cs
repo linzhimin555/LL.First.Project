@@ -57,10 +57,10 @@ namespace LL.FirstCore.HttpHelper
         /// <typeparam name="T"></typeparam>
         /// <param name="client"></param>
         /// <param name="url"></param>
-        /// <param name="dic"></param>
+        /// <param name="dic">参数信息</param>
         /// <param name="bearerToken"></param>
         /// <returns></returns>
-        public async static Task<ResponseMessage<T>> PostData<T>(HttpClient client, string url, Dictionary<string, string> dic, string bearerToken = "")
+        public async static Task<ResponseMessage<T>> PostData<T>(HttpClient client, string url, Dictionary<string, object> dic, string bearerToken = "")
         {
             var result = new ResponseMessage<T>();
             try

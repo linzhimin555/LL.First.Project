@@ -190,6 +190,45 @@ namespace LL.FirstCore.Controllers.v1
         }
 
         /// <summary>
+        /// 测试http请求方法
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("TestUploadImage")]
+        public async Task<IActionResult> TestUploadImage()
+        {
+            MemoryStream imageStream = new MemoryStream();
+            using (var file = new FileStream(@"C:\Users\Administrator\Desktop\image.png", FileMode.Open))
+            {
+                file.CopyTo(imageStream);
+            }
+            imageStream.Position = 0;
+            var postContent = new MultipartFormDataContent();
+            string boundary = string.Format("--{0}", DateTime.Now.Ticks.ToString("x"));
+            postContent.Headers.Add("ContentType", $"multipart/form-data, boundary={boundary}");
+            postContent.Add(new StreamContent(imageStream, (int)imageStream.Length), "file", "test.png");
+            using (var fileClient = _clientFactory.CreateClient())
+            {
+                var uploadResponse = await fileClient.PostAsync("http://www.tzaqwl.com:5001/api/img/Upload/Img", postContent);
+            }
+
+            using (var insertClient = _clientFactory.CreateClient())
+            {
+                var dic = new Dictionary<string, object>()
+                {
+                    ["content"] = "测试测试",
+                    ["img"] = "img_Id",
+                    ["title"] = "测试测试",
+                    ["isDel"] = true,
+                    ["createTime"] = "2020-09-29 16:44"
+                };
+
+                await CustomClient.PostData<string>(insertClient, "http://www.tzaqwl.com:5001/api/Story/add",dic);
+            }
+
+            return Ok("保存失败");
+        }
+
+        /// <summary>
         /// 测试通过HttpClient上传文件
         /// </summary>
         /// <returns></returns>

@@ -21,6 +21,8 @@ namespace LL.FirstCore.Filter
         private readonly IHostEnvironment _env;
         private readonly ILogger<GlobalExceptionFilter> _logger;
 
+        public const string GlobalErrorLogName = "GlobalErrorLog";
+
         public GlobalExceptionFilter(IWebHostEnvironment env, ILogger<GlobalExceptionFilter> logger)
         {
             _env = env;
@@ -42,16 +44,16 @@ namespace LL.FirstCore.Filter
             string error = string.Empty;
             void ReadException(Exception ex)
             {
-                error += $@"【异常信息】：{context.Exception.Message}<br>【异常类型】：{ex.GetType()}<br>【堆栈调用】:{ex.StackTrace}";
+                error += $@"<br>【异常信息】：{context.Exception.Message}<br>【异常类型】：{ex.GetType()}<br>【堆栈调用】:{ex.StackTrace}";
                 error = error.Replace("<br>", "\r\n");
                 error = error.Replace("位置", "<strong style=\"color:red\">位置</strong>");
-                //error += string.Format("{0} | {1} | {2}", ex.Message, ex.StackTrace, ex.InnerException);
                 if (ex.InnerException != null)
                 {
                     ReadException(ex.InnerException);
                 }
             }
             ReadException(context.Exception);
+
             _logger.LogError(error);
 
             if (_env.IsDevelopment())

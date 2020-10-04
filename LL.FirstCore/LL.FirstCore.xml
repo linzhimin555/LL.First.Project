@@ -123,6 +123,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.TestUploadImage">
+            <summary>
+            测试http请求方法
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.TestFileHttpMethod">
             <summary>
             测试通过HttpClient上传文件
@@ -261,14 +267,14 @@
             <param name="bearerToken"></param>
             <returns></returns>
         </member>
-        <member name="M:LL.FirstCore.HttpHelper.CustomClient.PostData``1(System.Net.Http.HttpClient,System.String,System.Collections.Generic.Dictionary{System.String,System.String},System.String)">
+        <member name="M:LL.FirstCore.HttpHelper.CustomClient.PostData``1(System.Net.Http.HttpClient,System.String,System.Collections.Generic.Dictionary{System.String,System.Object},System.String)">
             <summary>
             Post请求
             </summary>
             <typeparam name="T"></typeparam>
             <param name="client"></param>
             <param name="url"></param>
-            <param name="dic"></param>
+            <param name="dic">参数信息</param>
             <param name="bearerToken"></param>
             <returns></returns>
         </member>
