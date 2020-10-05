@@ -19,8 +19,10 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Http;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.WebEncoders;
 using Microsoft.IdentityModel.Tokens;
@@ -31,11 +33,15 @@ using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
 using System.IO;
 using System.Linq;
+using System.Net;
+using System.Net.Http;
 using System.Reflection;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Text.Unicode;
+using System.Threading;
 using System.Threading.Tasks;
+using static LL.FirstCore.HttpHelper.CustomHttpClientLogging;
 
 namespace LL.FirstCore
 {
@@ -197,7 +203,21 @@ namespace LL.FirstCore
             #endregion
 
             #region 添加HttpClient请求
+            //services.AddHttpClient("test").ConfigurePrimaryHttpMessageHandler(provider =>
+            //{
+            //    return new PrimaryHttpMessageHandler(provider);
+            //})
+            //.AddHttpMessageHandler(provider =>
+            //{
+            //    return new LogHttpMessageHandler(provider);
+            //})
+            //.AddHttpMessageHandler(provider =>
+            //{
+            //    return new Log2HttpMessageHandler(provider);
+            //});
             services.AddHttpClient();
+            //P3 在DI框架中替换原有的 IHttpMessageHandlerFilter 实现
+            services.Replace(ServiceDescriptor.Singleton<IHttpMessageHandlerBuilderFilter, TraceIdLoggingMessageHandlerFilter>());
             #endregion
 
             #region 添加统一模型验证,无需实现IActionFilter
@@ -240,18 +260,18 @@ namespace LL.FirstCore
 
             #region 添加健康检查
             //添加对数据库的检测
-            services.AddHealthChecks().AddSqlServer(
-                 Configuration.GetConnectionString("DefaultConnection"),
-                 healthQuery: "SELECT 1;",
-                 name: "sql server",
-                 failureStatus: HealthStatus.Degraded,
-                 tags: new[] { "db", "sql", "sqlserver" }
-                );
+            //services.AddHealthChecks().AddSqlServer(
+            //     Configuration.GetConnectionString("DefaultConnection"),
+            //     healthQuery: "SELECT 1;",
+            //     name: "sql server",
+            //     failureStatus: HealthStatus.Degraded,
+            //     tags: new[] { "db", "sql", "sqlserver" }
+            //    );
             //添加AspNetCore.HealthChecks.UI以及HealthChecks.UI.InMemory.Storage包
-            services.AddHealthChecksUI(setupSettings: setup =>
-            {
-                setup.AddHealthCheckEndpoint("sqlserver", "/health");
-            }).AddInMemoryStorage();
+            //services.AddHealthChecksUI(setupSettings: setup =>
+            //{
+            //    setup.AddHealthCheckEndpoint("sqlserver", "/health");
+            //}).AddInMemoryStorage();
             #endregion
 
             #region AutoMapper 自动映射
@@ -314,11 +334,11 @@ namespace LL.FirstCore
             app.UseMiniProfiler();
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
-                {
-                    Predicate = _ => true,
-                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                });
+                //endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                //{
+                //    Predicate = _ => true,
+                //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                //});
                 //访问"/healthchecks-ui"即可看到可视化页面
                 endpoints.MapHealthChecksUI();
                 endpoints.MapControllers();

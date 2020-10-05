@@ -306,6 +306,12 @@
             请求结果数据
             </summary>
         </member>
+        <member name="T:LL.FirstCore.HttpHelper.CustomHttpClientLogging">
+            <summary>
+            解决HttpClientFactory日志无追踪机制的探索
+            https://www.cnblogs.com/JulianHuang/p/11982021.html
+            </summary>
+        </member>
         <member name="T:LL.FirstCore.Middleware.MiddlewareHelpers">
             <summary>
             中间件注册帮助类
