@@ -119,7 +119,7 @@ namespace LL.FirstCore
 
                         ValidateLifetime = true,    //是否验证失效时间,使用当前时间与token中的Claim中声明的Notbefore和expires对比
                         RequireExpirationTime = true,    //是否要求token的claim中必须包含Expires
-                        //允许的服务器时间偏移量  
+                        //允许的服务器时间偏移量(过期滑动时间,通过这个属性可以设置滑动时间的长短,设置为TimeSpan.Zero表示到期就失效,没有缓冲期)
                         ClockSkew = TimeSpan.FromSeconds(30)
                     };
                     //Jwt事件(JwtBearer认证中，默认是通过Http的Authorization头来获取的，这也是最推荐的做法，但是在某些场景下，我们可能会使用Url或者是Cookie来传递Token)
@@ -260,18 +260,18 @@ namespace LL.FirstCore
 
             #region 添加健康检查
             //添加对数据库的检测
-            //services.AddHealthChecks().AddSqlServer(
-            //     Configuration.GetConnectionString("DefaultConnection"),
-            //     healthQuery: "SELECT 1;",
-            //     name: "sql server",
-            //     failureStatus: HealthStatus.Degraded,
-            //     tags: new[] { "db", "sql", "sqlserver" }
-            //    );
+            services.AddHealthChecks().AddSqlServer(
+                 Configuration.GetConnectionString("DefaultConnection"),
+                 healthQuery: "SELECT 1;",
+                 name: "sql server",
+                 failureStatus: HealthStatus.Degraded,
+                 tags: new[] { "db", "sql", "sqlserver" }
+                );
             //添加AspNetCore.HealthChecks.UI以及HealthChecks.UI.InMemory.Storage包
-            //services.AddHealthChecksUI(setupSettings: setup =>
-            //{
-            //    setup.AddHealthCheckEndpoint("sqlserver", "/health");
-            //}).AddInMemoryStorage();
+            services.AddHealthChecksUI(setupSettings: setup =>
+            {
+                setup.AddHealthCheckEndpoint("sqlserver", "/health");
+            }).AddInMemoryStorage();
             #endregion
 
             #region AutoMapper 自动映射
@@ -334,11 +334,11 @@ namespace LL.FirstCore
             app.UseMiniProfiler();
             app.UseEndpoints(endpoints =>
             {
-                //endpoints.MapHealthChecks("/health", new HealthCheckOptions()
-                //{
-                //    Predicate = _ => true,
-                //    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
-                //});
+                endpoints.MapHealthChecks("/health", new HealthCheckOptions()
+                {
+                    Predicate = _ => true,
+                    ResponseWriter = UIResponseWriter.WriteHealthCheckUIResponse
+                });
                 //访问"/healthchecks-ui"即可看到可视化页面
                 endpoints.MapHealthChecksUI();
                 endpoints.MapControllers();
