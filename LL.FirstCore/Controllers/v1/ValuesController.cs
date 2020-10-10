@@ -56,6 +56,7 @@ namespace LL.FirstCore.Controllers.v1
         /// </summary>
         /// <returns></returns>
         [HttpGet]
+        [AllowAnonymous]
         public IActionResult Get() => Ok(new string[] { HttpContext.GetRequestedApiVersion().ToString() });
 
         /// <summary>

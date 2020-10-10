@@ -356,6 +356,12 @@
             </summary>
             <param name="stream"></param>
         </member>
+        <member name="M:LL.FirstCore.Middleware.RequestLogMilddleware.TestMethod(Microsoft.AspNetCore.Http.HttpContext)">
+            <summary>
+            在中间件中获取action方法上的特性信息
+            </summary>
+            <param name="context"></param>
+        </member>
         <member name="F:LL.FirstCore.Startup.provider">
             <summary>
             Api版本信息

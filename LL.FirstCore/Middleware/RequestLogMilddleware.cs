@@ -13,6 +13,10 @@ using LL.FirstCore.IServices.Base;
 using Microsoft.Extensions.Logging;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Authorization;
 
 namespace LL.FirstCore.Middleware
 {
@@ -97,6 +101,7 @@ namespace LL.FirstCore.Middleware
                 {
                     context.Response.Body = memory;
                     await _next(context);
+                    GetCustomAttribute(context);
                     _logger.LogInformation("开始处理请求结果。。。。。。。。。");
                     ResponseDataLog(memory);
                     memory.Position = 0;
@@ -151,6 +156,17 @@ namespace LL.FirstCore.Middleware
             {
                 _logger.LogInformation("请求结果:" + responseBody);
             }
+        }
+
+        /// <summary>
+        /// 在中间件中获取判断action方法上是否有指定特性信息
+        ///     注意:必须在当前请求执行完next方法以后才能获取到对应信息
+        /// </summary>
+        /// <param name="context">请求上下文</param>
+        private void GetCustomAttribute(HttpContext context)
+        {
+            Endpoint route = context.Features.Get<IEndpointFeature>()?.Endpoint;
+            var hasAttr = route.Metadata.Any(m => m.GetType() == typeof(AllowAnonymousAttribute));
         }
     }
 }
