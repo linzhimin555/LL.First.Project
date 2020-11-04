@@ -42,6 +42,7 @@ namespace LL.FirstCore.Controllers.v1
         /// <param name="jwtProvider"></param>
         /// <param name="clientFactory"></param>
         /// <param name="mapper"></param>
+        /// <param name="swaggerProvider"></param>
         public ValuesController(ILogger<ValuesController> logger, IJwtProvider jwtProvider, IHttpClientFactory clientFactory, IMapper mapper, ISwaggerProvider swaggerProvider)
         {
             _logger = logger;
@@ -154,11 +155,13 @@ namespace LL.FirstCore.Controllers.v1
 
         /// <summary>
         /// 文件测试接口
+        /// 上传图片,多文件，可以使用 postman 测试， 不支持swagger
+        /// 如果是单文件，参数可以写 IFormFile file
         /// </summary>
-        /// <param name="formFile"></param>
+        /// <param name="files"></param>
         /// <returns></returns>
         [HttpPost("UploadTest")]
-        public IActionResult UploadTest(IFormFile formFile)
+        public IActionResult UploadTest(List<IFormFile> files)
         {
             return Ok("上传文件成功!!!");
         }
@@ -223,7 +226,7 @@ namespace LL.FirstCore.Controllers.v1
                     ["createTime"] = "2020-09-29 16:44"
                 };
 
-                await CustomClient.PostData<string>(insertClient, "http://www.tzaqwl.com:5001/api/Story/add",dic);
+                await CustomClient.PostData<string>(insertClient, "http://www.tzaqwl.com:5001/api/Story/add", dic);
             }
 
             return Ok("保存失败");

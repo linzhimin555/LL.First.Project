@@ -73,6 +73,8 @@ namespace LL.FirstCore
             //{
             //    //默认设置下中文会被编码
             //    option.JsonSerializerOptions.Encoder = JavaScriptEncoder.Create(UnicodeRanges.All);
+            //    //设置此参数避免报循坏引用的异常
+            //    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
             //});
             #region using Api version(eg:参考链接:https://www.cnblogs.com/jjg0519/p/7253594.html,https://www.quarkbook.com/?p=793)
             //动态整合版:https://blog.csdn.net/ma524654165/article/details/77880106
@@ -227,6 +229,7 @@ namespace LL.FirstCore
                 options.InvalidModelStateResponseFactory = (context) =>
                 {
                     StringBuilder errorMessage = new StringBuilder();
+                    var validationErrors = context.ModelState.Keys.SelectMany(k => context.ModelState[k].Errors).Select(e => e.ErrorMessage).ToArray();
                     foreach (var item in context.ModelState.Values)
                     {
                         foreach (var error in item.Errors)
@@ -315,7 +318,7 @@ namespace LL.FirstCore
             //获取当前运行的进程名称
             var process = System.Diagnostics.Process.GetCurrentProcess().ProcessName;
             //请求日志中间件
-            app.UseRequestLog();
+            //app.UseRequestLog();
 
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
             // CORS跨域

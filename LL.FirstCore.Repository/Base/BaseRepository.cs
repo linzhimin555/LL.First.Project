@@ -269,6 +269,17 @@ namespace LL.FirstCore.Repository.Base
             return result;
         }
 
+        public async Task<int> RemoveListAsync(IEnumerable<TEntity> list)
+        {
+            foreach (var item in list)
+            {
+                Table.Attach(item);
+                Table.Remove(item);
+            }
+
+            return await SaveChangesAsync();
+        }
+
         public int DeleteBySql(string sql, params object[] parameters)
         {
             return Database.ExecuteSqlRaw(sql, CancellationToken.None, parameters);

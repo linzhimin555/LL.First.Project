@@ -65,6 +65,7 @@
             <param name="jwtProvider"></param>
             <param name="clientFactory"></param>
             <param name="mapper"></param>
+            <param name="swaggerProvider"></param>
         </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.Get">
             <summary>
@@ -110,11 +111,11 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.UploadTest(Microsoft.AspNetCore.Http.IFormFile)">
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.UploadTest(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
             <summary>
             文件测试接口
             </summary>
-            <param name="formFile"></param>
+            <param name="files"></param>
             <returns></returns>
         </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.TestHttpMethod">
@@ -356,11 +357,12 @@
             </summary>
             <param name="stream"></param>
         </member>
-        <member name="M:LL.FirstCore.Middleware.RequestLogMilddleware.TestMethod(Microsoft.AspNetCore.Http.HttpContext)">
+        <member name="M:LL.FirstCore.Middleware.RequestLogMilddleware.GetCustomAttribute(Microsoft.AspNetCore.Http.HttpContext)">
             <summary>
-            在中间件中获取action方法上的特性信息
+            在中间件中获取判断action方法上是否有指定特性信息
+                注意:必须在当前请求执行完next方法以后才能获取到对应信息
             </summary>
-            <param name="context"></param>
+            <param name="context">请求上下文</param>
         </member>
         <member name="F:LL.FirstCore.Startup.provider">
             <summary>
