@@ -48,7 +48,8 @@ namespace LL.FirstCore.Controllers.v1
         /// <returns></returns>
         [HttpGet]
         [Route("UserInfo")]
-        [Authorize(Roles = "admin", AuthenticationSchemes = "Bearer")]
+        [Authorize]
+        //[Authorize(Roles = "admin", AuthenticationSchemes = "Bearer")]
         public IActionResult UserInfo()
         {
             var obj = new

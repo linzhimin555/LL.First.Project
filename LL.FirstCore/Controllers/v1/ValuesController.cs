@@ -27,6 +27,7 @@ namespace LL.FirstCore.Controllers.v1
     [ApiVersion("1")]
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
+    [Authorize]
     public class ValuesController : ControllerBase
     {
         private readonly ILogger<ValuesController> _logger;

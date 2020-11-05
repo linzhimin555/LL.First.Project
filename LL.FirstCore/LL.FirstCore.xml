@@ -114,6 +114,8 @@
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.UploadTest(System.Collections.Generic.List{Microsoft.AspNetCore.Http.IFormFile})">
             <summary>
             文件测试接口
+            上传图片,多文件，可以使用 postman 测试， 不支持swagger
+            如果是单文件，参数可以写 IFormFile file
             </summary>
             <param name="files"></param>
             <returns></returns>
