@@ -31,6 +31,7 @@ using Newtonsoft.Json.Linq;
 using StackExchange.Profiling.Storage;
 using Swashbuckle.AspNetCore.SwaggerUI;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -127,13 +128,17 @@ namespace LL.FirstCore
                     //Jwt事件(JwtBearer认证中，默认是通过Http的Authorization头来获取的，这也是最推荐的做法，但是在某些场景下，我们可能会使用Url或者是Cookie来传递Token)
                     options.Events = new JwtBearerEvents()
                     {
+                        OnTokenValidated = context =>
+                        {
+                            return Task.CompletedTask;
+                        },
                         OnMessageReceived = context =>
                         {
                             //SignalR采用query传递token信息
                             context.Token = context.Request.Query["access_token"];
                             return Task.CompletedTask;
                         },
-                        //认证失败
+                        //认证失败(请求处理过程中的异常错误)
                         OnAuthenticationFailed = c =>
                         {
                             c.NoResult();
@@ -142,7 +147,7 @@ namespace LL.FirstCore
                             c.Response.WriteAsync(c.Exception.ToString()).Wait();
                             return Task.CompletedTask;
                         },
-                        //401
+                        //401(身份验证未通过)
                         OnChallenge = context =>
                         {
                             // Skip the default logic.
@@ -162,14 +167,17 @@ namespace LL.FirstCore
                         }
                     };
                 });
+
+            //因为获取声明的方式默认是走微软定义的一套映射方式，如果我们想要走JWT映射声明，那么我们需要将默认映射方式给移除掉
+            JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
             #endregion
 
             #region 配置跨域请求
-            //services.AddCors(options =>
-            //{
-            //    var origins = Configuration.GetSection("AllowOrigins").Get<string[]>();
-            //    options.AddDefaultPolicy(builder => builder.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
-            //});
+            services.AddCors(options =>
+            {
+                var origins = Configuration.GetSection("AllowOrigins").Get<string[]>();
+                options.AddDefaultPolicy(builder => builder.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod().AllowCredentials());
+            });
             #endregion
 
             #region 添加miniProfile(https://miniprofiler.com/dotnet/AspDotNetCore)
@@ -322,7 +330,7 @@ namespace LL.FirstCore
 
             // ↓↓↓↓↓↓ 注意下边这些中间件的顺序，很重要 ↓↓↓↓↓↓
             // CORS跨域
-            //app.UseCors();
+            app.UseCors();
             // 跳转https
             //app.UseHttpsRedirection();
             // 使用静态文件
