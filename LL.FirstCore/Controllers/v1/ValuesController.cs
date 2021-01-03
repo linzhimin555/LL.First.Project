@@ -21,6 +21,7 @@ using AutoMapper;
 using LL.FirstCore.Model.Dto;
 using LL.FirstCore.Model.Models;
 using Swashbuckle.AspNetCore.Swagger;
+using System.Xml;
 
 namespace LL.FirstCore.Controllers.v1
 {
@@ -195,6 +196,31 @@ namespace LL.FirstCore.Controllers.v1
         }
 
         /// <summary>
+        /// 测试xml接口
+        /// </summary>
+        /// <returns></returns>
+        [AllowAnonymous]
+        [HttpGet("TestOtherUrl")]
+        public async Task<IActionResult> TestOtherUrl()
+        {
+            var request = new HttpRequestMessage(HttpMethod.Get, "http://media.jiamingwenhua.com/");
+            using (var client = _clientFactory.CreateClient())
+            {
+                var response = await client.SendAsync(request);
+                if (response.IsSuccessStatusCode)
+                {
+                    var result = await response.Content.ReadAsStringAsync();
+                    XmlDocument doc = new XmlDocument();
+                    doc.LoadXml(result);
+                    string json = Newtonsoft.Json.JsonConvert.SerializeXmlNode(doc);
+                    return Ok(result);
+                }
+            }
+
+            return BadRequest();
+        }
+
+        /// <summary>
         /// 测试http请求方法
         /// </summary>
         /// <returns></returns>
@@ -278,15 +304,22 @@ namespace LL.FirstCore.Controllers.v1
         /// </summary>
         /// <returns></returns>
         [HttpGet("MergeImageToGif")]
+        [AllowAnonymous]
         public IActionResult MergeImageToGif()
         {
-            List<(string path, int duration)> images = new List<(string path, int duration)>()
+            var files = Directory.GetFiles(@"C:\Users\Administrator\Desktop\08-08\").OrderBy(v => v).ToArray();
+            var images = new List<(string path, int duration)>();
+            for (int i = 0; i < files.Length; i++)
             {
-                (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_13.png",100),
-                (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_17.png",100),
-                (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_19.png",100),
-                (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_25.png",100)
-            };
+                images.Add((files[i], 100));
+            }
+            //List<(string path, int duration)> images = new List<(string path, int duration)>()
+            //{
+            //    (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_13.png",100),
+            //    (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_17.png",100),
+            //    (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_19.png",100),
+            //    (@"C:\Users\Administrator\Desktop\mergeImage\2020_07_13_13_50_25.png",100)
+            //};
 
             ImageHelper.RegularImageToGif(images, @"C:\Users\Administrator\Desktop\mergeImage\result1.gif");
             return Ok("合并成功");

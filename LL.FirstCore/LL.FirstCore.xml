@@ -126,6 +126,12 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:LL.FirstCore.Controllers.v1.ValuesController.TestOtherUrl">
+            <summary>
+            测试xml接口
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:LL.FirstCore.Controllers.v1.ValuesController.TestUploadImage">
             <summary>
             测试http请求方法
@@ -179,7 +185,7 @@
         </member>
         <member name="M:LL.FirstCore.Controllers.WeatherForecastController.Get">
              <summary>
-             获取天气数据信息
+             获取天气数据信息yao
              </summary>
              <remarks>
              Sample request:
