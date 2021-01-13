@@ -129,6 +129,7 @@ namespace LL.FirstCore.Middleware
 
         /// <summary>
         /// 获取客户端请求的ip地址信息
+        ///     注意点:包含处理nginx转发的请求判断
         /// </summary>
         /// <param name="context"></param>
         /// <returns></returns>

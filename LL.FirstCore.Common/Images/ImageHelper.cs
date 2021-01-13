@@ -16,6 +16,7 @@ namespace LL.FirstCore.Common.Images
         /// <summary>
         /// 图片合并转换到GIF
         /// 注意:gif图片间隔:100 => 1 second
+        /// 注意点:当多张图片的内容差距比较大时，似乎会有黑色背景情况，待解决
         /// </summary>
         /// <param name="sourceImages">待合成的图片信息(有序的)</param>
         /// <param name="targetPath">gif保存路径</param>
