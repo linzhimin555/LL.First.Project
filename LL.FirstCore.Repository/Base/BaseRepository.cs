@@ -243,6 +243,21 @@ namespace LL.FirstCore.Repository.Base
 
             return SaveChanges();
         }
+
+        public virtual async Task<int> UpdateAsync(TEntity model, params string[] updateColumns)
+        {
+            //将对象添加到EF中
+            var entry = _dbContext.Entry(model);
+            //先设置对象的状态为Unchanged
+            entry.State = EntityState.Unchanged;
+            //循环被修改属性名数组
+            foreach (var propertyName in updateColumns)
+            {
+                entry.Property(propertyName).IsModified = true;
+            }
+
+            return await _dbContext.SaveChangesAsync();
+        }
         #endregion
 
         #region Delete
